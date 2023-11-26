@@ -1,0 +1,1 @@
+/home/jetson/archiconda3/envs/GongXun/bin/python /home/jetson/GongXun2/test/MWBTest.py

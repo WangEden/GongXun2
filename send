@@ -1,0 +1,3 @@
+ome/jetson/miniconda3/miniconda.sh：行 361: 16366 非法指令            （核心已转储） "$CONDA_EXEC" constructor --prefix "$PREFIX" --extract-conda-pkgs
+jetson@nano:~$ 
+
