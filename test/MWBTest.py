@@ -2,7 +2,8 @@
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture("/dev/video0")
+# cap = cv2.VideoCapture("/dev/video0")
+
 
 """
 notes:
@@ -12,12 +13,24 @@ notes:
 
 
 """
+def limit(num):
+    if num > 255: return 255
+    elif num < 0: return 0
+    else: return num
 
-def imageColorTemperatureGain(img: np.ndarray):
+
+def imageColorTemperatureGain(img: np.ndarray, gain: int):
+    img_result = img.copy()
+    rows, cols, channel = img.shape
+    level = np.round(gain / 2)
+    for i in range(rows):
+        for j in range(cols): # img's color module is BGR
+            img_result[i, j, 2] = limit(img[i, j, 2] + level)
+            img_result[i, j, 1] = limit(img[i, j, 1] + level)
+            img_result[i, j, 0] = limit(img[i, j, 0] + level)
+    return img_result
+        
     
-    pass
-
-
 def fineTuneColorTemperature():
     # 将图像分块
 
@@ -25,13 +38,12 @@ def fineTuneColorTemperature():
     pass
 
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        continue
-    cv2.imwrite("asd.jpg", frame)
-    break
-    # cv2.imshow("s", frame)
-    # cv2.waitKey(24)
-    # img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
+if __name__ == "__main__":
+    cap = cv2.VideoCapture(0)
+    while True:
+        ret, frame = cap.read()
+        gain = imageColorTemperatureGain(img=frame, gain=100)
+        out = np.hstack([frame, gain])
+        cv2.imshow("show", out)
+        if cv2.waitKey(24) & 0XFF == ord('q'):
+            break
