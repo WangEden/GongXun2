@@ -1,4 +1,3 @@
-# 手动白平衡
 import cv2
 import numpy as np
 import copy
@@ -44,19 +43,12 @@ while True:
     cap.set(cv2.CAP_PROP_SATURATION, saturation)
     cap.set(cv2.CAP_PROP_HUE, hue)
 
-    # 获取默认亮度值
     brightness = cap.get(cv2.CAP_PROP_BRIGHTNESS)
-    print("默认亮度值:", brightness)
-    # 获取默认对比度值
     contrast = cap.get(cv2.CAP_PROP_CONTRAST)
-    print("默认对比度:", contrast)
-    # 获取默认饱和度值
     saturation = cap.get(cv2.CAP_PROP_SATURATION)
-    print("默认饱和度:", saturation)
-    # 获取默认色调值
     hue = cap.get(cv2.CAP_PROP_HUE)
-    print("默认色调值:", hue)
-
+    print("亮度值:", brightness, "对比度:", contrast, "饱和度:", saturation, "色调值:", hue, end="\r")
     frame = cv2.resize(frame, (int(frame.shape[1] / 3 * 2), int(frame.shape[0] / 3 * 2)))
     cv2.imshow("img", frame)
     cv2.waitKey(25)
+

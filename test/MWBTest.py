@@ -32,7 +32,7 @@ notes:
     基于此, 对于RGB图像, 若要提高图像的色温, 应对R和G通道进行增强，B通道进行削弱，反之同理。
 
 待完成：
-    （1）理解并移植完美反射算法，并用numpy优化
+    （1）理解并移植完美反射算法，并用numpy优化 【OK】
     （2）因为目前定位准确，所以改善为区域白平衡（即以一定区域作为参考位置进行矫正）
     
 2. 颜色识别任务：
@@ -164,8 +164,6 @@ if __name__ == "__main__":
     while True:
         ret, frame = cap.read()
         gain_img = useRateMWB(frame, rateTuple)
-
-
 
         out = np.hstack([frame, gain_img])
         out = cv2.resize(out, (int(out.shape[1] / 3 * 2), int(out.shape[0] / 3 * 2)))
