@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<parameter>
+    <!-- 串口收发的消息 -->
+    <message>
+        <!-- 到达二维码区附近 -->
+        <arriveQR>OK--</arriveQR>
+        <!-- 到达原料区附近 -->
+        <arriveYL>wait</arriveYL>
+        <!-- 二维码识别完成，进行前进 -->
+        <qrComplete>QROK</qrComplete>
+        <!-- 三个物块都抓取完成 -->
+        <task2OK>t2OK</task2OK>
+        <!-- 发送微调误差 -->
+        <tweak>kstz</tweak>
+        <!-- 微调动作完成 -->
+        <tweakOk>wtok</tweakOk>
+        <!-- 校准完成 -->
+        <calibrOk>cbok</calibrOk>
+        <!-- 向左转弯 -->
+        <turnLeft>tl--</turnLeft>
+        <!-- 向右转弯 -->
+        <turnRight>tr--</turnRight>
+        <!-- 进行抓取 -->
+        <catch>ctch</catch>
+        <!-- 进行放置 -->
+        <set>st--</set>
+        <!-- 抓取/放置动作完成 -->
+        <mngOK>mnok</mngOK>
+        <!--  -->
+    </message>
+
+    <!-- 相机参数 -->
+    <capSetting>
+        <!-- 亮度 -->
+        <brightness>-80.0</brightness>
+        <!-- 对比度 -->
+        <contrast>35.0</contrast>
+        <!-- 饱和度 -->
+        <saturation>80.0</saturation>
+        <!-- 色调 -->
+        <hue>0.0</hue>
+        <!-- 白平衡RateB -->
+        <rateb>1.050603004</rateb>
+        <!-- 白平衡RateG -->
+        <rateg>1.050603004</rateg>
+        <!-- 白平衡RateR -->
+        <rater>1.050603004</rater>
+    </capSetting>
+
+    <!-- 阈值参数 -->
+    <threshold tag="ring">
+        <color category="red">
+            <H>
+                <ceiling>169</ceiling>
+                <floor>146</floor>
+            </H>
+            <S>
+                <ceiling>126</ceiling>
+                <floor>36</floor>
+            </S>
+            <V>
+                <ceiling>255</ceiling>
+                <floor>0</floor>
+            </V>
+        </color>
+        <color category="green">
+                        <H>
+                <ceiling>103</ceiling>
+                <floor>41</floor>
+            </H>
+            <S>
+                <ceiling>71</ceiling>
+                <floor>33</floor>
+            </S>
+            <V>
+                <ceiling>255</ceiling>
+                <floor>0</floor>
+            </V>
+        </color>
+        <color category="blue">
+            <H>
+                <ceiling>122</ceiling>
+                <floor>114</floor>
+            </H>
+            <S>
+                <ceiling>101</ceiling>
+                <floor>46</floor>
+            </S>
+            <V>
+                <ceiling>255</ceiling>
+                <floor>0</floor>
+            </V>
+        </color>
+    </threshold>
+
+    <threshold tag="item">
+        <color category="red">
+            <H>
+                <floor>169</floor>
+                <ceiling>185</ceiling>
+            </H>
+            <S>
+                <floor>181</floor>
+                <ceiling>220</ceiling>
+            </S>
+            <V>
+                <floor>0</floor>
+                <ceiling>255</ceiling>
+            </V>
+        </color>
+        <color category="green">
+            <H>
+                <floor>53</floor>
+                <ceiling>88</ceiling>
+            </H>
+            <S>
+                <floor>61</floor>
+                <ceiling>179</ceiling>
+            </S>
+            <V>
+                <floor>0</floor>
+                <ceiling>255</ceiling>
+            </V>
+        </color>
+        <color category="blue">
+            <H>
+                <floor>83</floor>
+                <ceiling>127</ceiling>
+            </H>
+            <S>
+                <floor>103</floor>
+                <ceiling>217</ceiling>
+            </S>
+            <V>
+                <floor>0</floor>
+                <ceiling>255</ceiling>
+            </V>
+        </color>
+    </threshold>
+</parameter>

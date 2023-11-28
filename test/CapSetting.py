@@ -20,7 +20,6 @@ print("默认饱和度:", saturation)
 # 获取默认色调值
 hue = cap.get(cv2.CAP_PROP_HUE)
 print("默认色调值:", hue)
-
 def callback(event):
     pass
 
@@ -51,4 +50,3 @@ while True:
     frame = cv2.resize(frame, (int(frame.shape[1] / 3 * 2), int(frame.shape[0] / 3 * 2)))
     cv2.imshow("img", frame)
     cv2.waitKey(25)
-

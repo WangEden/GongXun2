@@ -23,6 +23,7 @@ print("默认色调值:", hue)
 
 clickCnt = 2
 mwbRect = []
+stop = False
 
 
 """
@@ -34,7 +35,7 @@ notes:
 待完成：
     （1）理解并移植完美反射算法，并用numpy优化 【OK】
     （2）因为目前定位准确，所以改善为区域白平衡（即以一定区域作为参考位置进行矫正）
-    
+
 2. 颜色识别任务：
     （1）预先在补光和使用完美反射白平衡矫正的情况下，存好色环和物块的颜色HSV阈值（将物块和色环放于场地白色背景下进行录制）
     （2）之后更换场地所在环境，利用预先存好的阈值，搭配实时的白平衡处理进行颜色识别（随机打光）
@@ -44,7 +45,7 @@ notes:
     （2）写一个在调试阶段运行的程序，该程序会在进行完整跑圈的时候进行适应场地光线调节改变白平衡的参数（需要将算法中的参数提炼做成JSON或XML）
     （3）梯度法自适应阈值，将梯度处于某一范围的色块区域归于一类
 
-    
+
 """
 def fineTuneColorTemperature():
     # 将图像分块
@@ -145,7 +146,7 @@ def getRateBGR():
                 mwbRect.clear()
                 clickCnt = 2
             print(rateB, rateG, rateR)
-        
+
 
 def useRateMWB(img: np.ndarray, rateTuple: tuple):
     rb, rg, rr = cv2.split(img.astype(np.int64))
@@ -157,6 +158,12 @@ def useRateMWB(img: np.ndarray, rateTuple: tuple):
     return result
 
 
+def stopHandle(e, x, y, f, p):
+    global stop
+    if e == cv2.EVENT_LBUTTONDOWN:
+        stop = True
+
+
 if __name__ == "__main__":
     # cap = cv2.VideoCapture(0)
     rateTuple = getRateBGR()
@@ -164,9 +171,12 @@ if __name__ == "__main__":
     while True:
         ret, frame = cap.read()
         gain_img = useRateMWB(frame, rateTuple)
-
         out = np.hstack([frame, gain_img])
         out = cv2.resize(out, (int(out.shape[1] / 3 * 2), int(out.shape[0] / 3 * 2)))
         cv2.imshow("show", out)
+        cv2.setMouseCallback("show", stopHandle)
+        if stop:
+            cv2.imwrite("afterMWB.jpg", gain_img)
+            break
         if cv2.waitKey(24) & 0XFF == ord('q'):
             break
