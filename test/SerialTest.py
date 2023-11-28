@@ -4,11 +4,11 @@ import serial, struct
 uart = serial.Serial(  # 声明串口
     port="/dev/ttyTHS1",
     baudrate=115200,
-    bytesize=8,
-    parity=serial.PARITY_NONE,
+    # bytesize=8,
+    # parity=serial.PARITY_NONE,
     stopbits=1,
-    timeout=0,
-    dsrdtr=True,
+    timeout=1,
+    # dsrdtr=True,1
 )
 
 # 定义数据包，格式为2个帧头+4个字符数据+2个半整型数据+帧尾（11byte）
@@ -40,12 +40,12 @@ def recv_data():
 
 if __name__ == "__main__":
     send_data(["a", "b", "c", "d"], 123, 4231)
-    # while True:
-    #     response = uart.read(4)
-    #     print(response)
-    #     if response == "abcd":
-    #         break
-    #     else:
-    #         pass
-    #         # print("waiting...")
-
+    while True:
+        response = uart.read(6)
+        print(response, len(response))
+        # uart.write(response)
+        # if response == "":
+        #     print("")
+        # else:
+        #     pass
+            # print("waiting...")
