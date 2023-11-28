@@ -2,6 +2,7 @@
 import cv2
 import numpy as np
 import copy
+from XmlProcess import *
 
 
 cap = cv2.VideoCapture("/dev/video0")
@@ -24,6 +25,7 @@ print("默认色调值:", hue)
 clickCnt = 2
 mwbRect = []
 stop = False
+
 
 
 """
@@ -168,6 +170,12 @@ if __name__ == "__main__":
     # cap = cv2.VideoCapture(0)
     rateTuple = getRateBGR()
     print(rateTuple)
+    capSetting = xmlReadCapSettings()
+    cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
+    cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
+    cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
+    cap.set(cv2.CAP_PROP_HUE, capSetting[3])
+
     while True:
         ret, frame = cap.read()
         gain_img = useRateMWB(frame, rateTuple)

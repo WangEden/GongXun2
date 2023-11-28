@@ -33,19 +33,19 @@
     <!-- 相机参数 -->
     <capSetting>
         <!-- 亮度 -->
-        <brightness>-80.0</brightness>
+        <brightness>-50.0</brightness>
         <!-- 对比度 -->
-        <contrast>35.0</contrast>
+        <contrast>43.0</contrast>
         <!-- 饱和度 -->
-        <saturation>80.0</saturation>
+        <saturation>47.0</saturation>
         <!-- 色调 -->
-        <hue>0.0</hue>
+        <hue>16.0</hue>
         <!-- 白平衡RateB -->
-        <rateb>1.050603004</rateb>
+        <rateb>0.9953363416315475</rateb>
         <!-- 白平衡RateG -->
-        <rateg>1.050603004</rateg>
+        <rateg>0.9660302745350318</rateg>
         <!-- 白平衡RateR -->
-        <rater>1.050603004</rater>
+        <rater>0.9843837281643676</rater>
     </capSetting>
 
     <!-- 阈值参数 -->

@@ -39,5 +39,19 @@ def xmlReadCapSetting(tag: int) -> float:
     return float(item_node.text)
 
 
+def xmlReadCapSettings() -> list:
+    para = {
+        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue", 
+        4: "rateb", 5: "rateg", 6: "rater"
+    }
+    result = []
+    paraDomTree = ElementTree.parse("./parameter.xml")
+    capSetting_node = paraDomTree.find('capSetting')
+    for i in range(7):
+        item_node = capSetting_node.find(para[i])
+        result.append(float(item_node.text))
+    return result
+
+
 if __name__ == "__main__":
     print(xmlReadCapSetting(4), type(xmlReadCapSetting(4)))

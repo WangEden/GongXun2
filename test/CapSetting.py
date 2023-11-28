@@ -30,8 +30,13 @@ cv2.createTrackbar("Contrast", "img", 0, 100, callback)
 cv2.createTrackbar("Saturation", "img", 0, 100, callback)
 cv2.createTrackbar("Hue", "img", 0, 100, callback)
 
+from MWBTest import useRateMWB
+
+
+rateTuple = (0.9953363416315475, 0.9660302745350318, 0.9843837281643676)
+
+
 while True:
-    ret, frame = cap.read()
     brightness = cv2.getTrackbarPos("Brightness", "img", )
     contrast = cv2.getTrackbarPos("Contrast", "img", )
     saturation = cv2.getTrackbarPos("Saturation", "img", )
@@ -42,11 +47,19 @@ while True:
     cap.set(cv2.CAP_PROP_SATURATION, saturation)
     cap.set(cv2.CAP_PROP_HUE, hue)
 
+    ret, frame = cap.read()
+    frame = useRateMWB(frame, rateTuple)
+    frame = cv2.GaussianBlur(frame, (3, 3), 0)
+
     brightness = cap.get(cv2.CAP_PROP_BRIGHTNESS)
     contrast = cap.get(cv2.CAP_PROP_CONTRAST)
     saturation = cap.get(cv2.CAP_PROP_SATURATION)
     hue = cap.get(cv2.CAP_PROP_HUE)
+    
     print("亮度值:", brightness, "对比度:", contrast, "饱和度:", saturation, "色调值:", hue, end="\r")
-    frame = cv2.resize(frame, (int(frame.shape[1] / 3 * 2), int(frame.shape[0] / 3 * 2)))
-    cv2.imshow("img", frame)
+    
+    frame2 = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    out = np.hstack([frame, frame2])
+    out = cv2.resize(out, (int(out.shape[1] /  2), int(out.shape[0] /  2)))
+    cv2.imshow("img", out)
     cv2.waitKey(25)
