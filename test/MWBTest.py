@@ -166,15 +166,28 @@ def stopHandle(e, x, y, f, p):
         stop = True
 
 
+
+
 if __name__ == "__main__":
     # cap = cv2.VideoCapture(0)
-    rateTuple = getRateBGR()
-    print(rateTuple)
     capSetting = xmlReadCapSettings()
     cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
     cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
     cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
     cap.set(cv2.CAP_PROP_HUE, capSetting[3])
+
+    rateTuple = getRateBGR()
+
+    paraDomTree = ElementTree.parse("./setting/rateTuple.xml")
+    rateb_node = paraDomTree.find("rateb")
+    rateg_node = paraDomTree.find("rateg")
+    rater_node = paraDomTree.find("rater")
+    rateb_node.text = str(rateTuple[0])
+    rateg_node.text = str(rateTuple[1])
+    rater_node.text = str(rateTuple[2])
+    paraDomTree.write("./setting/rateTuple.xml")
+    
+    print(rateTuple)
 
     while True:
         ret, frame = cap.read()

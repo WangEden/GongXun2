@@ -12,9 +12,10 @@ import copy
 # out = cv2.resize(out, (int(out.shape[1] / 2), int(out.shape[0] / 2)))
 # cv2.imshow("out", out)
 # cv2.waitKey(0)
-img = cv2.imread("asd.jpg")
-img2 = copy.deepcopy(img)
+# img = cv2.imread("asd.jpg")
+# img2 = copy.deepcopy(img)
 
-img2 *= 0
-cv2.imshow("img2", img2)
-cv2.waitKey(0)
+# img2 *= 0
+# cv2.imshow("img2", img2)
+# cv2.waitKey(0)
+print(str(1 - 0.0)) 

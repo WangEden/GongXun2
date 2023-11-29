@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=test3
+Name[zh_CN]=测试3
+Exec = gnome-terminal -e "bash -c '/home/jetson/GongXun2/test/test3.sh; $SHELL'" 
+Path = /home/jetson/GongXun2/test/test3.sh
+Terminal=true
+Type=Application
