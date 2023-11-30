@@ -52,7 +52,6 @@ notes:
     （2）写一个在调试阶段运行的程序，该程序会在进行完整跑圈的时候进行适应场地光线调节改变白平衡的参数（需要将算法中的参数提炼做成JSON或XML）
     （3）梯度法自适应阈值，将梯度处于某一范围的色块区域归于一类
 
-
 """
 def fineTuneColorTemperature():
     # 将图像分块
@@ -169,8 +168,6 @@ def stopHandle(e, x, y, f, p):
     global stop
     if e == cv2.EVENT_LBUTTONDOWN:
         stop = True
-
-
 
 
 if __name__ == "__main__":
