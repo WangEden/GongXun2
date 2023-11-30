@@ -105,6 +105,7 @@ if __name__ == "__main__":
             cv2.putText(mwbImg, "blue", (box3[0], box3[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
         if stop:
+            cv2.imwrite("HSVTestResult.jpg", mwbImg)
             break
 
         cv2.imshow("img", mwbImg)
