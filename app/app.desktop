@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Main
+Exec=gnome-terminal -e "./start.sh"
+Type=Application
+Terminal=true

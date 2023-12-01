@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # 创建队列
     image_queue = multiprocessing.Queue()
 
-    # 创建三个子进程
+    # 创建两个子进程
     processUart = multiprocessing.Process(target=process_uart, args=())
     processTask = multiprocessing.Process(target=process_task, args=(image_queue, ))
 
