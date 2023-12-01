@@ -17,6 +17,18 @@ sequence = []
 
 
 # # # # # # # # # # # # # # # # #
+# 状态区
+stop = False
+def stopHandler(e, x, y, f, p):
+    global stop
+    if e == cv2.EVENT_LBUTTONDOWN:
+        stop = True
+
+# # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # #
+
+
+# # # # # # # # # # # # # # # # #
 # 显示图像
 def display(frame: np.ndarray):
     global screen, screen_realtime_picture, screen_qrcode_area, screen_blank_area
@@ -68,5 +80,9 @@ def Task1_QRCode():
 
 
 if __name__ == "__main__":
+    cv2.namedWindow("screen", cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty("screen", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    cv2.setMouseCallback("screen", stopHandler)
+
     cv2.namedWindow("screen", )
     Task1_QRCode()
