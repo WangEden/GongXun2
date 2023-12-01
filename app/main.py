@@ -3,15 +3,15 @@ import numpy as np
 
 
 # # # # # # # # # # # # # # # # #
-# 常量区
+# 全局变量区
 camera1_path = "/dev/cameraQRCode"
 camera2_path = "/dev/cameraMain"
 screen = np.ones((600, 1024, 3), np.uint8) * 255 # 全屏显示的画面
 screen_realtime_picture = np.zeros((480, 640, 3), np.uint8) # 拍到的画面
 screen_qrcode_area = np.ones((120, 1024, 3), np.uint8) * 255 # 信息显示区域
 screen_blank_area = np.ones((480, 384, 3), np.uint8) * 255 # 空白区域
+screen_blank_area2 = np.ones((480, 1024, 3), np.uint8) * 255 #空白区域 2
 sequence = []
-
 # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # #
 
@@ -23,7 +23,6 @@ def stopHandler(e, x, y, f, p):
     global stop
     if e == cv2.EVENT_LBUTTONDOWN:
         stop = True
-
 # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # #
 
@@ -32,10 +31,21 @@ def stopHandler(e, x, y, f, p):
 # 显示图像
 def display(frame: np.ndarray):
     global screen, screen_realtime_picture, screen_qrcode_area, screen_blank_area
-
     temp = np.hstack([frame, screen_blank_area])
     screen = np.vstack([screen_qrcode_area, temp])
     cv2.imshow("screen", screen)
+    cv2.waitKey(5)
+# # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # #
+
+
+# # # # # # # # # # # # # # # # #
+# 空闲显示
+def idle():
+    global screen, screen_qrcode_area, screen_blank_area2
+    screen = np.vstack([screen_qrcode_area, screen_blank_area2])
+    cv2.imshow("screen", screen)
+    cv2.waitKey(5)
 # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # #
 
@@ -71,12 +81,16 @@ def Task1_QRCode():
             cv2.putText(screen_qrcode_area, result, (600, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             break
         display(frame)
+    cap.release()
 # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # #
 
 
 # # # # # # # # # # # # # # # # #
 # 取物块
+def Task2_CatchFromPlate():
+    global camera2_path, sequence
+
 
 
 if __name__ == "__main__":
@@ -84,5 +98,5 @@ if __name__ == "__main__":
     cv2.setWindowProperty("screen", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     cv2.setMouseCallback("screen", stopHandler)
 
-    cv2.namedWindow("screen", )
     Task1_QRCode()
+    print("sequence: ", sequence)
