@@ -9,16 +9,16 @@ cap.set(3, 640)
 cap.set(4, 480)
 cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
 
-# 获取默认亮度值
+# 获取默认亮度值 0
 brightness = cap.get(cv2.CAP_PROP_BRIGHTNESS)
 print("默认亮度值:", brightness)
-# 获取默认对比度值
+# 获取默认对比度值 35
 contrast = cap.get(cv2.CAP_PROP_CONTRAST)
 print("默认对比度:", contrast)
-# 获取默认饱和度值
+# 获取默认饱和度值 80
 saturation = cap.get(cv2.CAP_PROP_SATURATION)
 print("默认饱和度:", saturation)
-# 获取默认色调值
+# 获取默认色调值 0
 hue = cap.get(cv2.CAP_PROP_HUE)
 print("默认色调值:", hue)
 def callback(event):
