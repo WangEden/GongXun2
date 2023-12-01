@@ -20,7 +20,7 @@ sequence = []
 # 显示图像
 def display(frame: np.ndarray):
     global screen, screen_realtime_picture, screen_qrcode_area, screen_blank_area
-    
+
     temp = np.hstack([frame, screen_blank_area])
     screen = np.vstack([screen_qrcode_area, temp])
     cv2.imshow("screen", screen)
@@ -32,9 +32,9 @@ def display(frame: np.ndarray):
 # 扫码 1
 def Task1_QRCode():
     global camera1_path, screen_qrcode_area, sequence
-    
+
     from pyzbar.pyzbar import decode
-    cap = cv2.VideoCapture(camera1_path)
+    # cap = cv2.VideoCapture(camera1_path)
     cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
@@ -58,6 +58,7 @@ def Task1_QRCode():
                     sequence.append(int(j))  # queue: [1, 2, 3, 3, 2, 1]
             cv2.putText(screen_qrcode_area, result, (600, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             break
+        display(frame)
 # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # #
 
@@ -67,4 +68,5 @@ def Task1_QRCode():
 
 
 if __name__ == "__main__":
+    cv2.namedWindow("screen", )
     Task1_QRCode()
