@@ -52,7 +52,7 @@ def process_task(queue: Queue, lock: Lock):
     Task2_GetFromPlate(camera2_path, image_queue, sequence)
 
     # 执行任务三 在粗加工区放取物块
-
+    
 
     # 执行任务四 在暂存区放物块
 
@@ -67,7 +67,6 @@ def process_task(queue: Queue, lock: Lock):
 
 
 # # # # # # # # # # # # # # # # #
-
 
 
 if __name__ == "__main__":

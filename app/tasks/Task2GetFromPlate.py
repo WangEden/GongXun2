@@ -110,10 +110,11 @@ def Task2_GetFromPlate(cameraPath: str,
                 print("catch: ", COLOR[max_index])
                 rank.remove(max_index)
             else:
-                cv2.putText(img, "no result", (box[0] + 25, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
+                cv2.putText(img, "no result", (box[0] + 60, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
             queue.put(img)
             if len(rank) == 0:
                 print("三个物块抓取完成")
+                queue.put(np.ones((480, 640, 3), np.uint8) * 255)
                 break
             
 
