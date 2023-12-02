@@ -43,6 +43,21 @@ def xmlReadItemThreshold(color: str):  # rank: [min:[], max:[]]
 #     return rank
 
 
+def xmlReadRingThreshold(color: str):  # rank: [min:[], max:[]]
+    _min, _max = [], []
+    paraDomTree = ElementTree.parse("./setting/thresholdRing.xml")
+    colorNode = paraDomTree.find(f'color[@category="{color}"]')
+    floors = colorNode.findall('./*/floor')
+    ceilings = colorNode.findall('./*/ceiling')
+    for i in range(3):
+        _min.append(int(floors[i].text))
+        _max.append(int(ceilings[i].text))
+    _min = np.array(_min)
+    _max = np.array(_max)
+    rank = np.array([_min, _max])
+    return rank
+
+
 def xmlReadCapSetting(tag: int) -> float:
     para = {
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
