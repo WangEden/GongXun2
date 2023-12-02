@@ -45,28 +45,36 @@ def xmlReadItemThreshold(color: str):  # rank: [min:[], max:[]]
 
 def xmlReadCapSetting(tag: int) -> float:
     para = {
-        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue", 
-        4: "rateb", 5: "rateg", 6: "rater"
+        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
-    paraDomTree = ElementTree.parse("./parameter.xml")
-    capSetting_node = paraDomTree.find('capSetting')
-    item_node = capSetting_node.find(para[tag])
+    paraDomTree = ElementTree.parse("./setting/capSetting.xml")
+    item_node = paraDomTree.find(para[tag])
     return float(item_node.text)
 
 
-def xmlReadCapSettings() -> list:
+def xmlReadCapSettings() -> tuple:
     para = {
-        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue", 
-        4: "rateb", 5: "rateg", 6: "rater"
+        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
-    paraDomTree = ElementTree.parse("./parameter.xml")
-    capSetting_node = paraDomTree.find('capSetting')
-    for i in range(7):
-        item_node = capSetting_node.find(para[i])
+    paraDomTree = ElementTree.parse("./setting/capSetting.xml")
+    for i in range(4):
+        item_node = paraDomTree.find(para[i])
         result.append(float(item_node.text))
-    return result
+    return tuple(result)
+
+
+def xmlReadRateTuple() -> tuple:
+    para = {
+        0: "rateb", 1: "rateg", 2: "rater"
+    }
+    result = []
+    paraDomTree = ElementTree.parse("./setting/rateTuple.xml")
+    for i in range(3):
+        item_node = paraDomTree.find(para[i])
+        result.append(float(item_node.text))
+    return tuple(result)
 
 
 if __name__ == "__main__":
-    print(xmlReadCapSetting(4), type(xmlReadCapSetting(4)))
+    print(xmlReadCommand("arriveYL", 0))

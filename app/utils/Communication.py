@@ -21,3 +21,22 @@ def send_data(cmd: list, i, f):
         int(f),  # 半整型数据2
     )
     uart.write(data)
+
+
+def send_cmd(cmd: str):
+    data = struct.pack(
+        "<bbbb",  # 四个字符作为命令, 两个浮点作为xy偏差
+        ord(str(cmd[0])),  # 字符1
+        ord(str(cmd[1])),  # 字符2
+        ord(str(cmd[2])),  # 字符3
+        ord(str(cmd[3]))   # 字符4
+    )
+    uart.write(data)
+
+
+def recv_data():
+    return uart.read(4).decode("utf-8", 'ignore')
+
+
+if __name__ == "__main__":
+    pass

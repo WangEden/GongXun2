@@ -28,7 +28,7 @@ def stopHandle(e, x, y, f, p):
     if e == cv2.EVENT_LBUTTONDOWN:
         stop = True
 
-    
+
 def useRateMWB(img: np.ndarray, rateTuple: tuple):
     rb, rg, rr = cv2.split(img.astype(np.int64))
     rb = rb * rateTuple[0]
@@ -51,7 +51,6 @@ if __name__ == "__main__":
     thresholdItem = [[], [], []]  # -> [[min, max], [min, max], [min, max]]
     for i, c in enumerate(["red", "green", "blue"]):
         xmlReadThreshold("item", c, thresholdItem[i])
-
 
     # # 获取相机参数
     paraDomTree = ElementTree.parse("./setting/capSetting.xml")
@@ -93,7 +92,11 @@ if __name__ == "__main__":
         box1 = get_the_most_credible_box(b_box1)
         box2 = get_the_most_credible_box(b_box2)
         box3 = get_the_most_credible_box(b_box3)
-    
+
+        print("box1:", box1)
+        print("box2:", box2)
+        print("box3:", box3)
+
         if box1 is not None:
             cv2.rectangle(mwbImg, (box1[0], box1[1]), (box1[0] + box1[2], box1[1] + box1[3]), (0, 0, 255), 2)
             cv2.putText(mwbImg, "red", (box1[0], box1[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
@@ -111,6 +114,3 @@ if __name__ == "__main__":
         cv2.imshow("img", mwbImg)
         cv2.setMouseCallback("img", stopHandle)
         cv2.waitKey(25)
-
-
-        

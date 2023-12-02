@@ -1,14 +1,16 @@
 import cv2
 import numpy as np
-import multiprocessing
+from multiprocessing import Queue, Array, Lock
+from utils.Communication import * 
 
 
 # 任务一
 # 扫码
 def Task1_QRCode(cameraPath: str, 
-                 screen_qrcode_area: np.ndarray, 
-                 queue: multiprocessing.Queue, 
-                 sequence: list ):
+                 queue: Queue, 
+                 sequence: list,
+                 qr_result: Array, 
+                 lock: Lock):
     
     from pyzbar.pyzbar import decode
     # cap = cv2.VideoCapture(camera1_path)
@@ -33,10 +35,16 @@ def Task1_QRCode(cameraPath: str,
                 l = list(i)  # l : ['1', '2', '3']
                 for j in l:
                     sequence.append(int(j))  # queue: [1, 2, 3, 3, 2, 1]
-            cv2.putText(screen_qrcode_area, result, (600, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+            result_bytes = result.encode('utf-8')
+            lock.acquire()
+            for i in range(len(result_bytes)):
+                qr_result[i] = result_bytes[i]
+            lock.release()
             break
         queue.put(frame)
     cap.release()
+    send_cmd("QROK") # 扫码完成，发送命令
+    return result
 
 
 if __name__ == "__main__":

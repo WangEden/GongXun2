@@ -6,6 +6,13 @@
     <arriveYL>wait</arriveYL>
     <!-- 二维码识别完成，进行前进 -->
     <qrComplete>QROK</qrComplete>
+    <!-- 抓红色 -->
+    <catchred>CTHR</catchred>
+    <!-- 抓绿色 -->
+    <catchgreen>CTHG</catchgreen>
+    <!-- 抓蓝色 -->
+    <catchblue>CTHB</catchblue>
+
     <!-- 三个物块都抓取完成 -->
     <task2OK>t2OK</task2OK>
     <!-- 发送微调误差 -->
