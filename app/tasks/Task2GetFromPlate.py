@@ -10,11 +10,11 @@ def Task2_GetFromPlate(cameraPath: str,
                        queue: Queue,
                        sequence: list):
     
-    queue.put(np.ones((480, 640, 3), np.uint8) * 255)
-    # while True: # 等待到达原料区
-    #     response = recv_data()
-    #     if response == xmlReadCommand("arriveYL", 0):
-    #         break
+    # np.ones((480, 640, 3), np.uint8) * 255
+    while True: # 等待到达原料区
+        response = recv_data()
+        if response == xmlReadCommand("arrive", 0):
+            break
 
     # 读取抓取顺序
     rank = np.array(sequence[0:3])
@@ -34,6 +34,9 @@ def Task2_GetFromPlate(cameraPath: str,
     RateTuple = xmlReadRateTuple()
     
     cap = cv2.VideoCapture(0)
+    a = cap.set(3, 640)
+    a = cap.set(4, 480)
+    a = cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
     a = cap.set(cv2.CAP_PROP_BRIGHTNESS, CapSetting[0])
     a = cap.set(cv2.CAP_PROP_CONTRAST, CapSetting[1])
     a = cap.set(cv2.CAP_PROP_SATURATION, CapSetting[2])
@@ -105,17 +108,28 @@ def Task2_GetFromPlate(cameraPath: str,
             cv2.rectangle(img, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), COLOR2[max_index], 2)
             cv2.putText(img, COLOR[max_index], (box[0], box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, COLOR2[max_index], 2, cv2.LINE_AA)
 
-            if max_index == rank[0]: # 颜色和当前的匹配
-                send_cmd(xmlReadCommand(f"catch{COLOR[max_index]}", 0))
-                print("catch: ", COLOR[max_index])
-                rank.remove(max_index)
+            if box[4] < 1000:
+                cv2.putText(img, "low size", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
+                queue.put(img)
             else:
-                cv2.putText(img, "no result", (box[0] + 60, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
-            queue.put(img)
-            if len(rank) == 0:
-                print("三个物块抓取完成")
-                queue.put(np.ones((480, 640, 3), np.uint8) * 255)
-                break
+                if max_index == rank[0]: # 颜色和当前的匹配
+                    send_cmd(xmlReadCommand(f"catch{COLOR[max_index]}", 0))
+                    print("catch: ", COLOR[max_index])
+                    rank.remove(max_index)
+                    queue.put(img)
+                else:
+                    cv2.putText(img, "no result", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
+                    queue.put(img)
+                if len(rank) == 0:
+                    print("三个物块抓取完成")
+                    queue.put(np.ones((480, 640, 3), np.uint8) * 255)
+                    break
+    cap.release()
+    blank = np.ones((480, 640, 3), np.uint8) * 255
+    
+    from utils.VisionUtils import cv2AddChineseText
+    img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
+    queue.put(img)
             
 
 if __name__ == "__main__":

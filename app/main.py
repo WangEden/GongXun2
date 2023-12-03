@@ -42,28 +42,39 @@ def stopHandler(e, x, y, f, p):
 def process_task(queue: Queue, lock: Lock):
     global camera1_path, camera2_path, qr_result, \
         sequence
-     
+
     # 执行任务一 扫码
     from tasks.Task1QRCode import Task1_QRCode
     Task1_QRCode(camera1_path, image_queue, sequence, qr_result, lock)
+    del Task1_QRCode
     
     # 执行任务二 从圆盘取物块
     from tasks.Task2GetFromPlate import Task2_GetFromPlate
     Task2_GetFromPlate(camera2_path, image_queue, sequence)
+    del Task2_GetFromPlate
 
     # 执行任务三 在粗加工区放取物块
+    from tasks.Task3PutOnRing3 import Task3_PutOnRing3
+    Task3_PutOnRing3(camera2_path, image_queue, sequence)
+    del Task3_PutOnRing3
     
-
     # 执行任务四 在暂存区放物块
-
+    from tasks.Task4PutOnRing6 import Task4_PutOnRing4
+    Task4_PutOnRing4(camera2_path, image_queue, sequence)
+    del Task4_PutOnRing4
 
     # 执行任务六 从圆盘取第二轮物块
-
+    from tasks.Task2GetFromPlate import Task2_GetFromPlate
+    Task2_GetFromPlate(camera2_path, image_queue, sequence)
+    del Task2_GetFromPlate
 
     # 执行任务七 在粗加工区放取第二轮物块
-
+    from tasks.Task3PutOnRing3 import Task3_PutOnRing3
+    Task3_PutOnRing3(camera2_path, image_queue, sequence)
+    del Task3_PutOnRing3
 
     # 执行任务八 在暂存区码垛放置物块
+
 
 
 # # # # # # # # # # # # # # # # #

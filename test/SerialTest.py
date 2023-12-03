@@ -40,10 +40,9 @@ def recv_data():
 
 if __name__ == "__main__":
     send_data(["s", "t", "o", "p"], 123, 4231)
-    # while True:
-    #     time.sleep(1)
-    #     # response = uart.read(6)
-    #     print("f")
+    while True:
+        response = uart.read(6).decode("utf-8", 'ignore')[0:4]
+        print("response", response)
         # uart.write(response)
         # if response == "":
         #     print("")

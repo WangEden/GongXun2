@@ -91,5 +91,19 @@ def xmlReadRateTuple() -> tuple:
     return tuple(result)
 
 
+def xmlReadLightCenter():
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = file.read()
+        tag = int(color)
+        paraDomTree = ElementTree.parse("./setting/lightCenter.xml")
+        if tag == 0:
+            item_node = paraDomTree.find(f'color[@tag="black"]')
+        elif tag == 1:
+            item_node = paraDomTree.find(f'color[@tag="white"]')
+        x = int(item_node.find("x").text)
+        y = int(item_node.find("y").text)
+    return tuple([x, y])
+
+
 if __name__ == "__main__":
-    print(xmlReadCommand("arriveYL", 0))
+    print(xmlReadLightCenter())

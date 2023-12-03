@@ -53,5 +53,21 @@ def xmlReadCapSettings() -> list:
     return result
 
 
+def xmlReadLightCenter():
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = file.read()
+        tag = int(color)
+        paraDomTree = ElementTree.parse("./setting/lightCenter.xml")
+        center_node = paraDomTree.find('center')
+        if tag == 0:
+            item_node = center_node.find(f'color[@tag="black"]')
+        elif tag == 1:
+            item_node = center_node.find(f'color[@tag="white"]')
+        xy = item_node.text.split('+')
+        x = int(xy[0])
+        y = int(xy[1])
+    return tuple([x, y])
+
+
 if __name__ == "__main__":
     print(xmlReadCapSetting(4), type(xmlReadCapSetting(4)))
