@@ -4,12 +4,16 @@ from multiprocessing import Queue
 from utils.Communication import * 
 from utils.XmlProcess import xmlReadCommand
 
+
 # 任务三
 # 放取物块
 def Task3_PutOnRing3(cameraPath: str,
                        queue: Queue,
                        sequence: list):
-        
+    
+    # send_dataDMA("QROK", 0, 0)
+    # time.sleep(1)
+    
     blank = np.ones((480, 640, 3), np.uint8) * 255
     
     from utils.VisionUtils import cv2AddChineseText
@@ -101,7 +105,6 @@ def Task3_PutOnRing3(cameraPath: str,
         else:
             queue.put(frame)
     cap.release()
-    
     # 按顺序放置和拿起物块，画面显示正在做的事
     COLOR = {0: "red", 1: "green", 2: "blue"}
     COLOR2 = {0: "红", 1: "绿", 2: "蓝"}
