@@ -14,17 +14,17 @@
         </V>
     </color>
     <color category="green">
-                    <H>
-            <ceiling>103</ceiling>
-            <floor>41</floor>
+        <H>
+            <ceiling>89</ceiling>
+            <floor>34</floor>
         </H>
         <S>
-            <ceiling>71</ceiling>
-            <floor>33</floor>
+            <ceiling>158</ceiling>
+            <floor>35</floor>
         </S>
         <V>
-            <ceiling>255</ceiling>
-            <floor>0</floor>
+            <ceiling>144</ceiling>
+            <floor>86</floor>
         </V>
     </color>
     <color category="blue">

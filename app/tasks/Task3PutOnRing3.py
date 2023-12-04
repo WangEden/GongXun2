@@ -8,7 +8,8 @@ from utils.XmlProcess import xmlReadCommand
 # 放取物块
 def Task3_PutOnRing3(cameraPath: str,
                        queue: Queue,
-                       sequence: list):
+                       sequence: list, 
+                       loop: int):
     
     RealDistance = 150 # mm
     PixelDistance = 320 # picel
@@ -19,12 +20,12 @@ def Task3_PutOnRing3(cameraPath: str,
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
 
-    while True: # 等待到达三色环区
-        queue.put(img)
-        response = recv_data()
-        if response == xmlReadCommand("arrive", 0):
-            print("cjgq:", response)
-            break
+    # while True: # 等待到达三色环区
+    #     queue.put(img)
+    #     response = recv_data()
+    #     if response == xmlReadCommand("arrive", 0):
+    #         print("cjgq:", response)
+    #         break
 
     send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
     import time
@@ -32,7 +33,10 @@ def Task3_PutOnRing3(cameraPath: str,
     time.sleep(3)
 
     # 读取抓取顺序
-    rank = np.array(sequence[0:3])
+    if loop == 1:
+        rank = np.array(sequence[0:3])
+    else:
+        rank = np.array(sequence[3:6])
     rank = (rank - 1).tolist()
     
     # 读取阈值
@@ -104,6 +108,7 @@ def Task3_PutOnRing3(cameraPath: str,
             dxr = int(distanceRate * dx)
             dyr = int(distanceRate * dy)
             send_dataDMA(xmlReadCommand("tweak", 1), dxr, dyr)
+            queue.put(frame)
             break
             f = False
         else:

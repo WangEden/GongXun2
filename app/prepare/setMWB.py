@@ -1,27 +1,29 @@
-# 手动白平衡校准
+# 手动白平衡
 import cv2
 import numpy as np
 import copy
-from xml.etree import ElementTree
 
 
+cap = cv2.VideoCapture("/dev/video0")
+cap.set(3, 640)
+cap.set(4, 480)
+cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
+# 获取默认亮度值
+brightness = cap.get(cv2.CAP_PROP_BRIGHTNESS)
+print("默认亮度值:", brightness)
+# 获取默认对比度值
+contrast = cap.get(cv2.CAP_PROP_CONTRAST)
+print("默认对比度:", contrast)
+# 获取默认饱和度值
+saturation = cap.get(cv2.CAP_PROP_SATURATION)
+print("默认饱和度:", saturation)
+# 获取默认色调值
+hue = cap.get(cv2.CAP_PROP_HUE)
+print("默认色调值:", hue)
+
+clickCnt = 2
+mwbRect = []
 stop = False
-KeyCenter = (832, 240)
-KeyLen = 60
-point1X, point1Y = 320, 240
-point2X, point2Y = 360, 260
-
-
-def xmlReadCapSettings() -> tuple:
-    para = {
-        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
-    }
-    result = []
-    paraDomTree = ElementTree.parse("./setting/capSetting.xml")
-    for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
-    return tuple(result)
 
 
 def perfectReflection(img: np.ndarray): # 谨记要使用numpy优化
@@ -110,58 +112,55 @@ def useRateMWB(img: np.ndarray, rateTuple: tuple):
     return result
 
 
-stop = False
-def stopHandler(e, x, y, f, p):
+def stopHandle(e, x, y, f, p):
     global stop
     if e == cv2.EVENT_LBUTTONDOWN:
         stop = True
 
 
-clickCnt = 2
-mwbRect = []
+from xml.etree import ElementTree
+def xmlReadCapSettings() -> tuple:
+    para = {
+        0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
+    }
+    result = []
+    paraDomTree = ElementTree.parse("../setting/capSetting.xml")
+    for i in range(4):
+        item_node = paraDomTree.find(para[i])
+        result.append(float(item_node.text))
+    return tuple(result)
 
-cv2.namedWindow("screen", cv2.WINDOW_NORMAL)
-cv2.setWindowProperty("screen", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-cv2.setMouseCallback("screen", stopHandler)
-screen = np.ones((600, 1024, 3), np.uint8) * 255 # 全屏显示的画面
 
-cap = cv2.VideoCapture("/dev/video0")
-cap.set(3, 640)
-cap.set(4, 480)
-cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
-capSetting = xmlReadCapSettings()
-cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
-cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
-cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
-cap.set(cv2.CAP_PROP_HUE, capSetting[3])
+if __name__ == "__main__":
+    # cap = cv2.VideoCapture(0)
+    capSetting = xmlReadCapSettings()
+    cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
+    cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
+    cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
+    cap.set(cv2.CAP_PROP_HUE, capSetting[3])
 
-while True:
-    ret, frame = cap.read()
+    rateTuple = getRateBGR()
+
+    paraDomTree = ElementTree.parse("../setting/rateTuple.xml")
+    rateb_node = paraDomTree.find("rateb")
+    rateg_node = paraDomTree.find("rateg")
+    rater_node = paraDomTree.find("rater")
+    rateb_node.text = str(rateTuple[0])
+    rateg_node.text = str(rateTuple[1])
+    rater_node.text = str(rateTuple[2])
+    paraDomTree.write("../setting/rateTuple.xml")
     
+    print(rateTuple)
 
-
-rateTuple = getRateBGR()
-
-paraDomTree = ElementTree.parse("./setting/rateTuple.xml")
-rateb_node = paraDomTree.find("rateb")
-rateg_node = paraDomTree.find("rateg")
-rater_node = paraDomTree.find("rater")
-rateb_node.text = str(rateTuple[0])
-rateg_node.text = str(rateTuple[1])
-rater_node.text = str(rateTuple[2])
-paraDomTree.write("./setting/rateTuple.xml")
-
-print(rateTuple)
-
-while True:
-    ret, frame = cap.read()
-    gain_img = useRateMWB(frame, rateTuple)
-    out = np.hstack([frame, gain_img])
-    out = cv2.resize(out, (int(out.shape[1] / 3 * 2), int(out.shape[0] / 3 * 2)))
-    cv2.imshow("show", out)
-    cv2.setMouseCallback("show", stopHandle)
-    if stop:
-        cv2.imwrite("afterMWB.jpg", gain_img)
-        break
-    if cv2.waitKey(24) & 0XFF == ord('q'):
-        break
+    while True:
+        ret, frame = cap.read()
+        gain_img = useRateMWB(frame, rateTuple)
+        out = np.hstack([frame, gain_img])
+        out = cv2.resize(out, (int(out.shape[1] / 3 * 2), int(out.shape[0] / 3 * 2)))
+        cv2.imshow("show", out)
+        cv2.setMouseCallback("show", stopHandle)
+        if stop:
+            # cv2.imwrite("afterMWB.jpg", gain_img)
+            break
+        if cv2.waitKey(24) & 0XFF == ord('q'):
+            break

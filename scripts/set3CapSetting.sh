@@ -1,5 +1,6 @@
 #! /bin/bash
 conda activate GongXun
-cd /home/jetson/GongXun2/test
-/home/jetson/archiconda3/envs/GongXun/bin/python /home/jetson/GongXun2/test/MWBTest.py
+cd /home/jetson/GongXun2/app/prepare
+sudo chmod 777 /dev/ttyTHS1
+/home/jetson/archiconda3/envs/GongXun/bin/python /home/jetson/GongXun2/app/prepare/setCapSetting.py
 exit 0

@@ -8,10 +8,14 @@ from utils.XmlProcess import xmlReadCommand
 # 取物块
 def Task2_GetFromPlate(cameraPath: str,
                        queue: Queue,
-                       sequence: list):
+                       sequence: list, loop: int):
     
     # np.ones((480, 640, 3), np.uint8) * 255
     blank = np.ones((480, 640, 3), np.uint8) * 255
+
+    # 
+    # sequence = [1, 2, 3]
+    # 
 
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
@@ -24,7 +28,10 @@ def Task2_GetFromPlate(cameraPath: str,
             break
 
     # 读取抓取顺序
-    rank = np.array(sequence[0:3])
+    if loop == 1:
+        rank = np.array(sequence[0:3])
+    else:
+        rank = np.array(sequence[3:6])
     rank = (rank - 1).tolist()
     
     # 读取阈值
@@ -121,7 +128,7 @@ def Task2_GetFromPlate(cameraPath: str,
             cv2.rectangle(img, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), COLOR2[max_index], 2)
             cv2.putText(img, COLOR[max_index], (box[0], box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, COLOR2[max_index], 2, cv2.LINE_AA)
 
-            if box[4] < 1000:
+            if box[4] < 500:
                 cv2.putText(img, "low size", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
                 queue.put(img)
             else:
@@ -130,6 +137,8 @@ def Task2_GetFromPlate(cameraPath: str,
                     print("catch: ", COLOR[max_index])
                     rank.remove(max_index)
                     queue.put(img)
+                    # 等待抓放完成
+                    time.sleep(6)
                 else:
                     cv2.putText(img, "no result", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
                     queue.put(img)

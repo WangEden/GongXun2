@@ -8,7 +8,8 @@ from utils.XmlProcess import xmlReadCommand
 # 取物块
 def Task4_PutOnRing6(cameraPath: str,
                        queue: Queue,
-                       sequence: list):
+                       sequence: list,
+                       loop: int):
 
     # while True: # 等待到达三色环区
     #     response = recv_data()
@@ -16,7 +17,10 @@ def Task4_PutOnRing6(cameraPath: str,
     #         break
 
     # 读取抓取顺序
-    rank = np.array(sequence[0:3])
+    if loop == 1:
+        rank = np.array(sequence[0:3])
+    else:
+        rank = np.array(sequence[3:6])
     rank = (rank - 1).tolist()
     
     # 读取阈值
