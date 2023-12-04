@@ -25,7 +25,7 @@ point1X, point1Y = 0, 0
 point2X, point2Y = 100, 100
 
 def stopHandler(e, x, y, f, p):
-    global stop, LightCenterX, LightCenterY, button
+    global stop, LightCenterX, LightCenterY, button, point1X, point1Y, point2X, point2Y
     if e == cv2.EVENT_LBUTTONDOWN:
         if 0 < x < 640 and 0 < y < 480:
             stop = True
@@ -65,7 +65,8 @@ cv2.namedWindow("screen", cv2.WINDOW_NORMAL)
 cv2.setWindowProperty("screen", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 cv2.setMouseCallback("screen", stopHandler)
 
-
+# 0, 85
+# 220, 460
 cap = cv2.VideoCapture("/dev/video0")
 a = cap.set(3, 640)
 a = cap.set(4, 480)
@@ -104,10 +105,8 @@ while not stop:
     ret, frame = cap.read()
     frame = cv2.flip(frame, -1)
     cv2.rectangle(frame, (point1X, point1Y), (point2X, point2Y), (255, 0, 0), 2)
-    # cv2.circle(frame, (LightCenterX, LightCenterY), 5, (255, 0, 0), 2)
-    # cv2.putText(frame, f"({LightCenterX}, {LightCenterY})", (LightCenterX, LightCenterY), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
-    # cv2.line(frame, (0, LightCenterY), (640, LightCenterY), (255, 0, 0), 1)
-    # cv2.line(frame, (LightCenterX, 0), (LightCenterX, 480), (255, 0, 0), 1)
+    cv2.putText(frame, f"({point1X}, {point1Y})", (point1Y, point1Y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+    cv2.putText(frame, f"({point2X}, {point2Y})", (point2X, point2Y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
     screen[0:480, 0:640] = frame
     cv2.imshow("screen", screen)
     cv2.waitKey(5)

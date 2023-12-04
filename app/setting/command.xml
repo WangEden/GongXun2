@@ -18,6 +18,11 @@
     <!-- 抓蓝色 -->
     <catchblue>run5</catchblue>
 
+    <!-- 红/绿/蓝色环取 -->
+    <ringred>qhfh</ringred>
+    <ringgreen>qgfg</ringgreen>
+    <ringblue>qlfl</ringblue>
+
     <!-- 抓取/放置动作完成 -->
     <mngOK>mnok</mngOK>
 

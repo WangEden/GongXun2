@@ -19,9 +19,8 @@ def Task2_GetFromPlate(cameraPath: str,
     while True: # 等待到达原料区
         queue.put(img)
         response = recv_data()
-        print("response:", response)
         if response == xmlReadCommand("arrive", 0):
-            print("等待到达圆盘", end='\r')
+            print("等待到达圆盘response:", response, end='\r')
             break
 
     # 读取抓取顺序
@@ -89,7 +88,7 @@ def Task2_GetFromPlate(cameraPath: str,
         img = cv2.GaussianBlur(img, (3, 3), 0)
 
         # 假设物块在画面左下方，区域暂定为(0, )
-        ROI = [0, 200, 300, 280]
+        ROI = [0, 85, 220, 460 - 85]
         roi_img = np.zeros((480, 640, 3), np.uint8)
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         roi_img[ROI[1]:ROI[1]+ROI[3], ROI[0]:ROI[0]+ROI[2]] = \
@@ -142,6 +141,11 @@ def Task2_GetFromPlate(cameraPath: str,
     blank = np.ones((480, 640, 3), np.uint8) * 255
     
     from utils.VisionUtils import cv2AddChineseText
+
+    # 等最后一个物块抓完
+    time.sleep(8)
+
+    send_dataDMA("rwwc", 0, 0)
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
     queue.put(img)
             

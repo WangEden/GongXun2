@@ -69,10 +69,25 @@ def getCircleCenter(img:np.ndarray):
     return result
 
 
+# 利用K-means算法找出k个最准确的圆心
+def getKmeansCenter(k:int, lis:[(np.float32, np.float32), ...]) -> [(int, int), ...]:
+    lis = np.float32(np.array(lis))
+    # 定义终止条件
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    # 定义初始中心选择方式
+    flag = cv2.KMEANS_PP_CENTERS
+    compactness, labels, centers = cv2.kmeans(lis, k, None, criteria, 10, flag)
+    result = np.round(centers, 0).astype(int).tolist()
+    # print(centers)
+    return result
+
+
 def getTheCenterCircle(circles: list):
     pass
 
 
 
 if __name__ == "__main__":
+    circles = getKmeansCenter(2, [(1, 2), (3, 5), (76, 86), (2, 3)])
+    print(circles)
     pass

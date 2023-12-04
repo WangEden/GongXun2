@@ -56,7 +56,7 @@ def recv_data():
 
 if __name__ == "__main__":
     # send_dataDMA("run2", 0, 0)
-    send_dataDMA("kstz", 50, 50)
+    send_dataDMA("qlfl", 60, -100)
 
     # send_dataDMA("QROK", 1, 1)
     # while True:
