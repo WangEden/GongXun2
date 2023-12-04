@@ -12,11 +12,11 @@
     <complete>rwwc</complete>
     
     <!-- 抓红色 -->
-    <catchred>CTHR</catchred>
+    <catchred>run3</catchred>
     <!-- 抓绿色 -->
-    <catchgreen>CTHG</catchgreen>
+    <catchgreen>run4</catchgreen>
     <!-- 抓蓝色 -->
-    <catchblue>CTHB</catchblue>
+    <catchblue>run5</catchblue>
 
     <!-- 抓取/放置动作完成 -->
     <mngOK>mnok</mngOK>
