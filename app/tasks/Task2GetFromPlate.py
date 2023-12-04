@@ -14,23 +14,15 @@ def Task2_GetFromPlate(cameraPath: str,
     blank = np.ones((480, 640, 3), np.uint8) * 255
 
     from utils.VisionUtils import cv2AddChineseText
-    img = cv2AddChineseText(blank, f"去取物块", (384, 200), (0, 0, 0), 45)
+    img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
+
     while True: # 等待到达原料区
         queue.put(img)
         response = recv_data()
+        print("response:", response)
         if response == xmlReadCommand("arrive", 0):
             print("等待到达圆盘", end='\r')
             break
-
-    # 
-    import time
-    time.sleep(2)
-    # send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
-
-    send_dataDMA("QROK", 0, 0)
-
-    return 
-    # 
 
     # 读取抓取顺序
     rank = np.array(sequence[0:3])
@@ -42,7 +34,7 @@ def Task2_GetFromPlate(cameraPath: str,
     for i, c in enumerate(["red", "green", "blue"]):
         threshold[i] = xmlReadItemThreshold(c)
     
-    print(threshold)
+    # print(threshold)
 
     # 读取相机参数和白平衡参数
     from utils.XmlProcess import xmlReadCapSettings, xmlReadRateTuple
