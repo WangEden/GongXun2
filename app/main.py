@@ -36,7 +36,7 @@ def process_display(queue: Queue
     qrcode = qr_result.raw.decode('utf-8')
     cv2.putText(screen, qrcode, (512 - 7 * 25, 50 + 25), cv2.FONT_HERSHEY_SIMPLEX, 2.5, (0, 0, 0), 8, cv2.LINE_AA)
     cv2.imshow("screen", screen)
-    cv2.waitKey(5)
+    cv2.waitKey(1)
 
 def stopHandler(e, x, y, f, p):
     global stop, KeyCenter, buttonLen, continue_
@@ -51,7 +51,7 @@ def stopHandler(e, x, y, f, p):
 
 
 # 任务逻辑进行进程 # # # # # # # #
-def process_task(queue: Queue, lock: Lock):
+def process_task(queue: Queue, lock: Lock, continue_: Value):
     global camera1_path, camera2_path, qr_result, \
         sequence
 
@@ -60,7 +60,7 @@ def process_task(queue: Queue, lock: Lock):
     # Task1_QRCode(camera1_path, image_queue, sequence, qr_result, lock)
     # del Task1_QRCode
     
-    # 执行任务二 从圆盘取物块
+    # # 执行任务二 从圆盘取物块
     # from tasks.Task2GetFromPlate import Task2_GetFromPlate
     # Task2_GetFromPlate(camera2_path, image_queue, sequence)
     # del Task2_GetFromPlate
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     lock = Lock()
 
     # 创建任务处理进程
-    processTask = Process(target=process_task, args=(image_queue, lock))
+    processTask = Process(target=process_task, args=(image_queue, lock, continue_))
     processTask.start() # 任务开启
 
     # 主进程

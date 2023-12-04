@@ -1,9 +1,12 @@
 <!-- 串口收发的消息 -->
 <command>
     <!-- 到达某个区域 -->
-    <arrive>ARRV</arrive>
+    <arrive>wait</arrive>
     <!-- 微调 -->
     <tweak>kstz</tweak>
+
+    <!-- 准备抓取 -->
+    <prepareCatch>run2</prepareCatch>
 
     <!-- 任务完成 -->
     <complete>rwwc</complete>

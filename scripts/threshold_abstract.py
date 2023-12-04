@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-filename = './imgs/afterMWB.jpg'
+filename = './imgs/HSVTestResult.jpg'
 
 
 def callback(event):
@@ -15,17 +15,24 @@ def precondition(img):
     return result
 
 
+stop = True
+def stopHandle(e, x, y, f, p):
+    global stop
+    if e == cv2.EVENT_LBUTTONDOWN:
+        stop = True
+
+
 def Choose_Color():
     global filename
-    image0 = cv2.imread(filename, 1)
+    img = cv2.imread(filename, 1)
 
     # img = cv2.resize(image0, (640, 480))
     # img = cv2.resize(image0, (int(image0.shape[1] / 4), int(image0.shape[0] / 4)))
 
-    img = precondition(image0)
+    # img = precondition(image0)
 
     cv2.imshow("img_pyr", img)
-    cv2.waitKey(0)
+    cv2.waitKey(5)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # img = cv2.erode(img, None, iterations=2)

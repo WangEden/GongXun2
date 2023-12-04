@@ -97,15 +97,15 @@ if __name__ == "__main__":
         print("box2:", box2)
         print("box3:", box3)
 
-        if box1 is not None:
-            cv2.rectangle(mwbImg, (box1[0], box1[1]), (box1[0] + box1[2], box1[1] + box1[3]), (0, 0, 255), 2)
-            cv2.putText(mwbImg, "red", (box1[0], box1[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-        if box2 is not None:
-            cv2.rectangle(mwbImg, (box2[0], box2[1]), (box2[0] + box2[2], box2[1] + box2[3]), (0, 255, 0), 2)
-            cv2.putText(mwbImg, "green", (box2[0], box2[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-        if box3 is not None:
-            cv2.rectangle(mwbImg, (box3[0], box3[1]), (box3[0] + box3[2], box3[1] + box3[3]), (255, 0, 0), 2)
-            cv2.putText(mwbImg, "blue", (box3[0], box3[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+        # if box1 is not None:
+        #     cv2.rectangle(mwbImg, (box1[0], box1[1]), (box1[0] + box1[2], box1[1] + box1[3]), (0, 0, 255), 2)
+        #     cv2.putText(mwbImg, "red", (box1[0], box1[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+        # if box2 is not None:
+        #     cv2.rectangle(mwbImg, (box2[0], box2[1]), (box2[0] + box2[2], box2[1] + box2[3]), (0, 255, 0), 2)
+        #     cv2.putText(mwbImg, "green", (box2[0], box2[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        # if box3 is not None:
+        #     cv2.rectangle(mwbImg, (box3[0], box3[1]), (box3[0] + box3[2], box3[1] + box3[3]), (255, 0, 0), 2)
+        #     cv2.putText(mwbImg, "blue", (box3[0], box3[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
         if stop:
             cv2.imwrite("HSVTestResult.jpg", mwbImg)

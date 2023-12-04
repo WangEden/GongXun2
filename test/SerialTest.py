@@ -16,16 +16,32 @@ uart = serial.Serial(  # 声明串口
 def send_data(cmd: list, i, f):
     a, b, c, d = cmd
     data = struct.pack(
-        "<bbbbhh",  # 四个字符作为命令, 两个浮点作为xy偏差
-        # 0x2C,  # 帧头1      ','
-        # 0x3C,  # 帧头2      '<'
+        "<bbbbbbhhb",  # 四个字符作为命令, 两个浮点作为xy偏差
+        0x2C,  # 帧头1      ','
+        0x3C,  # 帧头2      '<'
         ord(str(a)),  # 字符1
         ord(str(b)),  # 字符2
         ord(str(c)),  # 字符3
         ord(str(d)),  # 字符4
         int(i),  # 半整型数据1
         int(f),  # 半整型数据2
-        # 0x3E,
+        0x3E,
+    )  # 帧尾       '>'
+    uart.write(data)
+
+
+# 定义数据包，格式为2个帧头+4个字符数据+2个半整型数据+帧尾（11byte）
+# 4个字符传输命令名，2个int传输xy方向的偏差
+def send_dataDMA(cmd: list, i, f):
+    a, b, c, d = cmd
+    data = struct.pack(
+        "<bbbbhh",  # 四个字符作为命令, 两个浮点作为xy偏差
+        ord(str(a)),  # 字符1
+        ord(str(b)),  # 字符2
+        ord(str(c)),  # 字符3
+        ord(str(d)),  # 字符4
+        int(i),  # 半整型数据1
+        int(f),  # 半整型数据2
     )  # 帧尾       '>'
     uart.write(data)
 
@@ -39,10 +55,13 @@ def recv_data():
 
 
 if __name__ == "__main__":
-    send_data(["s", "t", "o", "p"], 123, 4231)
-    while True:
-        response = uart.read(6).decode("utf-8", 'ignore')[0:4]
-        print("response", response)
+    # send_dataDMA("run2", 0, 0)
+    send_dataDMA("kstz", 50, 50)
+
+    # send_dataDMA("QROK", 1, 1)
+    # while True:
+    #     response = uart.read(6).decode("utf-8", 'ignore')[0:4]
+    #     print("response", response)
         # uart.write(response)
         # if response == "":
         #     print("")

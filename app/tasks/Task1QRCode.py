@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from multiprocessing import Queue, Array, Lock
 from utils.Communication import * 
+from utils.XmlProcess import xmlReadCommand
 
 
 # 任务一
@@ -43,7 +44,7 @@ def Task1_QRCode(cameraPath: str,
             break
         queue.put(frame)
     cap.release()
-    send_cmd("QROK") # 扫码完成，发送命令
+    send_dataDMA(xmlReadCommand("qrComplete", 1), 0, 0) # 扫码完成，发送命令
     blank = np.ones((480, 640, 3), np.uint8) * 255
     
     from utils.VisionUtils import cv2AddChineseText
