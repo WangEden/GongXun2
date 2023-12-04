@@ -54,6 +54,7 @@ def Task4_PutOnRing6(cameraPath: str,
     while True:
         # 先锁定中间那个圆环
         ret, frame = cap.read()
+        frame = cv2.flip(frame, -1)
         frame = useRateMWB(frame, RateTuple)
         circles = getCircleCenter(frame) # 获取画面中的圆形
         if len(circles) != 0:

@@ -49,6 +49,8 @@ def Task2_GetFromPlate(cameraPath: str,
     while True:
         # 判断圆盘是否在运动
         ret, last_frame = cap.read()
+        last_frame = cv2.flip(last_frame, -1)
+
         start_time = time.time()
         is_plate_move = True
         c = 0
@@ -57,8 +59,11 @@ def Task2_GetFromPlate(cameraPath: str,
             if end_time - start_time > 0.3:
                 start_time = time.time()
                 ret, last_frame = cap.read()
+                last_frame = cv2.flip(last_frame, -1)
             
             ret, current_frame = cap.read()
+            current_frame = cv2.flip(current_frame, -1)
+            
             # 圆盘没在移动时退出
             is_plate_move = moving_detect(last_frame, current_frame)
             if is_plate_move:
@@ -71,6 +76,7 @@ def Task2_GetFromPlate(cameraPath: str,
 
         # 开始处理
         ret, frame = cap.read()
+        frame = cv2.flip(frame, -1)
         img = useRateMWB(frame, RateTuple)
         img = cv2.GaussianBlur(img, (3, 3), 0)
 

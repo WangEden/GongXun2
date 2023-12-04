@@ -10,10 +10,10 @@ def Task3_PutOnRing3(cameraPath: str,
                        queue: Queue,
                        sequence: list):
 
-    while True: # 等待到达三色环区
-        response = recv_data()
-        if response == xmlReadCommand("arrive", 0):
-            break
+    # while True: # 等待到达三色环区
+    #     response = recv_data()
+    #     if response == xmlReadCommand("arrive", 0):
+    #         break
 
     # 读取抓取顺序
     rank = np.array(sequence[0:3])
@@ -55,6 +55,7 @@ def Task3_PutOnRing3(cameraPath: str,
     while True:
         # 先锁定中间那个圆环
         ret, frame = cap.read()
+        frame = cv2.flip(frame, -1)
         frame = useRateMWB(frame, RateTuple)
         circles = getCircleCenter(frame) # 获取画面中的圆形
         if len(circles) != 0:
@@ -67,6 +68,7 @@ def Task3_PutOnRing3(cameraPath: str,
             dy = x - XCenter
             dx = y - YCenter
             print("dy, dx:", dy, dx)
+            cv2.putText(frame, f"(dy:{dy}, dx{dx})", (XCenter, YCenter), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             send_data(xmlReadCommand("tweak", 0), dx, dy)
             queue.put(frame)
         # 待偏差归零，停止投送画面
@@ -102,6 +104,9 @@ def Task3_PutOnRing3(cameraPath: str,
             response = recv_data()
             if response == xmlReadCommand("mngOK", 0):
                 break
+        
+    send_cmd(xmlReadCommand("complete", 0))
+    print(xmlReadCommand("complete", 0))
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
     

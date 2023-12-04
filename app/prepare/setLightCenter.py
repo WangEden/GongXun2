@@ -75,6 +75,8 @@ while not stop:
     frame = cv2.flip(frame, -1)
     cv2.circle(frame, (LightCenterX, LightCenterY), 5, (255, 0, 0), 2)
     cv2.putText(frame, f"({LightCenterX}, {LightCenterY})", (LightCenterX, LightCenterY), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+    cv2.line(frame, (0, LightCenterY), (640, LightCenterY), (255, 0, 0), 1)
+    cv2.line(frame, (LightCenterX, 0), (LightCenterX, 480), (255, 0, 0), 1)
     screen[0:480, 0:640] = frame
     cv2.imshow("screen", screen)
     cv2.waitKey(5)

@@ -5,6 +5,9 @@
     <!-- 微调 -->
     <tweak>kstz</tweak>
 
+    <!-- 任务完成 -->
+    <complete>rwwc</complete>
+    
     <!-- 抓红色 -->
     <catchred>CTHR</catchred>
     <!-- 抓绿色 -->
