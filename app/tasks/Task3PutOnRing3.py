@@ -11,9 +11,9 @@ def Task3_PutOnRing3(cameraPath: str,
                        sequence: list, 
                        loop: int):
     
-    # 
-    send_dataDMA("run2", 0, 0)
-    # 
+    # # 
+    # send_dataDMA("run2", 0, 0)
+    # # 
 
     isflip = False
     with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
@@ -23,6 +23,7 @@ def Task3_PutOnRing3(cameraPath: str,
         elif int(color) == 1: # 白车
             isflip = True
 
+    # 
     RealDistance = 150 # mm
     PixelDistance = 320 # picel
     distanceRate = RealDistance / PixelDistance
@@ -32,17 +33,17 @@ def Task3_PutOnRing3(cameraPath: str,
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
 
-    # while True: # 等待到达三色环区
-    #     queue.put(img)
-    #     response = recv_data()
-    #     if response == xmlReadCommand("arrive", 0):
-    #         print("cjgq:", response)
-    #         break
+    while True: # 等待到达三色环区
+        queue.put(img)
+        response = recv_data()
+        if response == xmlReadCommand("arrive", 0):
+            print("cjgq:", response)
+            break
 
     send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
     import time
     # 等待机械臂运动
-    time.sleep(3)
+    time.sleep(2)
 
     # 读取抓取顺序
     if loop == 1:
@@ -57,7 +58,7 @@ def Task3_PutOnRing3(cameraPath: str,
     for i, c in enumerate(["red", "green", "blue"]):
         threshold[i] = xmlReadRingThreshold(c)
     
-    print(threshold)
+    # print(threshold)
 
     # 读取相机参数和白平衡参数
     from utils.XmlProcess import xmlReadCapSettings, xmlReadRateTuple
@@ -122,7 +123,7 @@ def Task3_PutOnRing3(cameraPath: str,
             dyr = int(distanceRate * dy)
             send_dataDMA(xmlReadCommand("tweak", 1), dxr, dyr)
             queue.put(frame)
-            cv2.imwrite("/home/jetson/GongXun2/app/debug/wt.jpg", frame)
+            cv2.imwrite("/home/jetson/GongXun2/app/debug/ring.jpg", frame)
             break
             f = False
         else:
@@ -138,27 +139,22 @@ def Task3_PutOnRing3(cameraPath: str,
         queue.put(frame)
     cap.release()
 
-    # 微调完等2s
-    time.sleep(2)
+    # 微调完等1s
+    time.sleep(1)
 
     # debug 发return 先调机械臂
-    return
+    # return
 
     # 按顺序放置和拿起物块，画面显示正在做的事
-    COLOR = {0: "red", 1: "green", 2: "blue"}
+    COLOR = {0: "Red", 1: "Green", 2: "Blue"}
     COLOR2 = {0: "红", 1: "绿", 2: "蓝"}
     for c in rank:
         send_dataDMA(xmlReadCommand(f"ring{COLOR[c]}", 1), 0, 0)
         blank = np.ones((480, 640, 3), np.uint8) * 255
-        img = cv2AddChineseText(blank, f"放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
-        print(f"放{COLOR2[c]}物块")
+        img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
+        print(f"在色环放{COLOR2[c]}物块")
         # 等放完
         time.sleep(10)
-        # while True:
-        #     response = recv_data()
-        #     queue.put(img)
-        #     if response == xmlReadCommand("mngOK", 0):
-        #         break
 
 
     # for c in rank:
@@ -172,9 +168,8 @@ def Task3_PutOnRing3(cameraPath: str,
     #         if response == xmlReadCommand("mngOK", 0):
     #             break
         
-    # send_dataDMA(xmlReadCommand("calibrOk", 1), 0, 0)
-    # send_dataDMA(xmlReadCommand("complete", 1), 0, 0)
-    # print(xmlReadCommand("complete", 0))
+    send_dataDMA(xmlReadCommand("complete", 1), 0, 0)
+    print(xmlReadCommand("complete", 0))
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
     

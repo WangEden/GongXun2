@@ -14,7 +14,7 @@ def Task1_QRCode(cameraPath: str,
                  lock: Lock):
     
     from pyzbar.pyzbar import decode
-    # cap = cv2.VideoCapture(camera1_path)
+    # cap = cv2.VideoCapture(cameraPath)
     cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
@@ -48,7 +48,7 @@ def Task1_QRCode(cameraPath: str,
     blank = np.ones((480, 640, 3), np.uint8) * 255
     
     from utils.VisionUtils import cv2AddChineseText
-    img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
+    img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 65)
     queue.put(img)
     return result
 

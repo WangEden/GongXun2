@@ -19,10 +19,15 @@ def Task4_PutOnRing6(cameraPath: str,
         elif int(color) == 1: # 白车
             isflip = True
 
-    # while True: # 等待到达三色环区
-    #     response = recv_data()
-    #     if response == xmlReadCommand("arrive", 0):
-    #         break
+    blank = np.ones((480, 640, 3), np.uint8) * 255
+    from utils.VisionUtils import cv2AddChineseText
+    img = cv2AddChineseText(blank, f"去暂存区", (384, 200), (0, 0, 0), 45)
+
+    while True: # 等待到达三色环区
+        response = recv_data()
+        queue.put(img)
+        if response == xmlReadCommand("arrive", 0):
+            break
 
     # 读取抓取顺序
     if loop == 1:
@@ -37,7 +42,7 @@ def Task4_PutOnRing6(cameraPath: str,
     for i, c in enumerate(["red", "green", "blue"]):
         threshold[i] = xmlReadRingThreshold(c)
     
-    print(threshold)
+    # print(threshold)
 
     # 读取相机参数和白平衡参数
     from utils.XmlProcess import xmlReadCapSettings, xmlReadRateTuple
@@ -77,8 +82,8 @@ def Task4_PutOnRing6(cameraPath: str,
             cv2.circle(frame, (XCenter, YCenter), 5, (255, 255, 255), 3)
             x, y, r = centerCircle
             cv2.circle(frame, (x, y), r, (255, 128, 64), 3)
-            dy = x - XCenter
-            dx = y - YCenter
+            dx = -(x - XCenter)
+            dy = y - YCenter
             print("dy, dx:", dy, dx)
             send_data(xmlReadCommand("tweak", 0), dx, dy)
             queue.put(frame)
@@ -89,21 +94,27 @@ def Task4_PutOnRing6(cameraPath: str,
                 queue.put(np.ones((480, 640, 3), np.uint8) * 255)
                 break
     cap.release()
+
+    import time
+    # 微调完等1s
+    time.sleep(1)
+
     # 按顺序放置和拿起物块，画面显示正在做的事
-    COLOR = {0: "red", 1: "green", 2: "blue"}
+    COLOR = {0: "Red", 1: "Green", 2: "Blue"}
     COLOR2 = {0: "红", 1: "绿", 2: "蓝"}
     for c in rank:
-        send_cmd(xmlReadCommand(f"catch{COLOR[c]}", 0))
+        send_dataDMA(xmlReadCommand(f"ring{COLOR[c]}", 1), 0, 0)
         blank = np.ones((480, 640, 3), np.uint8) * 255
-        img = cv2AddChineseText(blank, f"放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
-        queue.put(img)
-        print(f"放{COLOR2[c]}物块")
-        while True:
-            response = recv_data()
-            if response == xmlReadCommand("mngOK", 0):
-                break
+        img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
+        print(f"在色环放{COLOR2[c]}物块")
+        # 等放完
+        time.sleep(10)
 
-    queue.put(np.ones((480, 640, 3), np.uint8) * 255)
+    blank = np.ones((480, 640, 3), np.uint8) * 255
+    
+    from utils.VisionUtils import cv2AddChineseText
+    img = cv2AddChineseText(blank, f"去圆盘取第二轮物块", (384, 200), (0, 0, 0), 45)
+    queue.put(img)
 
 
 if __name__ == "__main__":

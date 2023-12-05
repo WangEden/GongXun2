@@ -8,9 +8,9 @@ from utils.XmlProcess import xmlReadCommand
 # 取物块
 def Task2_GetFromPlate(cameraPath: str,
                        queue: Queue,
-                       sequence: list, loop: int):
+                       sequence: list, 
+                       loop: int):
     
-    # np.ones((480, 640, 3), np.uint8) * 255
     blank = np.ones((480, 640, 3), np.uint8) * 255
 
     isflip = False
@@ -20,9 +20,6 @@ def Task2_GetFromPlate(cameraPath: str,
             isflip = False
         elif int(color) == 1: # 白车
             isflip = True
-    # 
-    # sequence = [1, 2, 3]
-    # 
 
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
@@ -37,7 +34,7 @@ def Task2_GetFromPlate(cameraPath: str,
     # 读取抓取顺序
     if loop == 1:
         rank = np.array(sequence[0:3])
-    else:
+    elif loop == 2:
         rank = np.array(sequence[3:6])
     rank = (rank - 1).tolist()
     
@@ -105,7 +102,7 @@ def Task2_GetFromPlate(cameraPath: str,
         img = cv2.GaussianBlur(img, (3, 3), 0)
 
         # 假设物块在画面左下方，区域暂定为(0, )
-        ROI = [0, 85, 220, 460 - 85]
+        ROI = [0, 85, 220 - 0, 460 - 85]
         roi_img = np.zeros((480, 640, 3), np.uint8)
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         roi_img[ROI[1]:ROI[1]+ROI[3], ROI[0]:ROI[0]+ROI[2]] = \
@@ -131,7 +128,7 @@ def Task2_GetFromPlate(cameraPath: str,
             boxs = [box1, box2, box3]
             size = [box1[4], box2[4], box3[4]]
             max_index = size.index(max(size)) # 获取面积最大的那个索引，就是所识别到的颜色
-            COLOR = {0: "red", 1: "green", 2: "blue"}
+            COLOR = {0: "Red", 1: "Green", 2: "Blue"}
             COLOR2 = {0: (0, 0, 255), 1: (0, 255, 0), 2: (255, 0, 0)}
 
             box = boxs[max_index] # 选红绿蓝最大的画框框
@@ -143,30 +140,31 @@ def Task2_GetFromPlate(cameraPath: str,
                 queue.put(img)
             else:
                 if max_index == rank[0]: # 颜色和当前的匹配
-                    send_cmd(xmlReadCommand(f"catch{COLOR[max_index]}", 0))
-                    print("catch: ", COLOR[max_index])
+                    send_cmd(xmlReadCommand(f"plate{COLOR[max_index]}", 0))
+                    print("catch from plate: ", COLOR[max_index])
+                    cv2.imwrite(f"/home/jetson/GongXun2/app/debug/plate{COLOR[max_index]}", img)
                     rank.remove(max_index)
                     queue.put(img)
                     # 等待抓放完成
                     time.sleep(6)
                 else:
-                    cv2.putText(img, "no result", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
+                    cv2.putText(img, "wrong target", (box[0] + 80, box[1]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 128), 2, cv2.LINE_AA)
                     queue.put(img)
                 if len(rank) == 0:
                     print("三个物块抓取完成")
                     queue.put(np.ones((480, 640, 3), np.uint8) * 255)
                     break
-    cap.release()
-    blank = np.ones((480, 640, 3), np.uint8) * 255
-    
-    from utils.VisionUtils import cv2AddChineseText
 
     # 等最后一个物块抓完
     time.sleep(8)
 
-    send_dataDMA("rwwc", 0, 0)
-    img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
+    cap.release()
+    blank = np.ones((480, 640, 3), np.uint8) * 255
+    from utils.VisionUtils import cv2AddChineseText
+    img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 65)
     queue.put(img)
+
+    send_dataDMA("rwwc", 0, 0)
             
 
 if __name__ == "__main__":

@@ -53,7 +53,7 @@ def stopHandler(e, x, y, f, p):
                 point1Y += 5
             elif button == 2:
                 point2Y += 5
-        elif int(KeyCenter[0] + KeyLen / 2) < x < int(KeyCenter[0] - KeyLen / 2) and \
+        elif int(KeyCenter[0] - KeyLen * 3 / 2) < x < int(KeyCenter[0] - KeyLen / 2) and \
             int(KeyCenter[1] - KeyLen * 9 / 2) < y < int(KeyCenter[1] - KeyLen * 7 / 2):
             button = 1
         elif int(KeyCenter[0] + KeyLen / 2) < x < int(KeyCenter[0] + KeyLen * 3 / 2) and \
