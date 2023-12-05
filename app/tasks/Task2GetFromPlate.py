@@ -13,6 +13,13 @@ def Task2_GetFromPlate(cameraPath: str,
     # np.ones((480, 640, 3), np.uint8) * 255
     blank = np.ones((480, 640, 3), np.uint8) * 255
 
+    isflip = False
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = file.read()
+        if int(color) == 0: # 黑车
+            isflip = False
+        elif int(color) == 1: # 白车
+            isflip = True
     # 
     # sequence = [1, 2, 3]
     # 
@@ -63,8 +70,8 @@ def Task2_GetFromPlate(cameraPath: str,
     while True:
         # 判断圆盘是否在运动
         ret, last_frame = cap.read()
-        last_frame = cv2.flip(last_frame, -1)
-
+        if isflip:
+            last_frame = cv2.flip(last_frame, -1)
         start_time = time.time()
         is_plate_move = True
         c = 0
@@ -73,10 +80,12 @@ def Task2_GetFromPlate(cameraPath: str,
             if end_time - start_time > 0.3:
                 start_time = time.time()
                 ret, last_frame = cap.read()
-                last_frame = cv2.flip(last_frame, -1)
+                if isflip:
+                    last_frame = cv2.flip(last_frame, -1)
             
             ret, current_frame = cap.read()
-            current_frame = cv2.flip(current_frame, -1)
+            if isflip:
+                current_frame = cv2.flip(current_frame, -1)
             
             # 圆盘没在移动时退出
             is_plate_move = moving_detect(last_frame, current_frame)
@@ -90,7 +99,8 @@ def Task2_GetFromPlate(cameraPath: str,
 
         # 开始处理
         ret, frame = cap.read()
-        frame = cv2.flip(frame, -1)
+        if isflip:
+            frame = cv2.flip(frame, -1)
         img = useRateMWB(frame, RateTuple)
         img = cv2.GaussianBlur(img, (3, 3), 0)
 

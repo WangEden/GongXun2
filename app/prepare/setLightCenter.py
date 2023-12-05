@@ -70,9 +70,18 @@ cv2.rectangle(screen, (int(KeyCenter[0] - KeyLen / 2), int(KeyCenter[1] + KeyLen
                (int(KeyCenter[0] + KeyLen / 2), int(KeyCenter[1] + KeyLen * 3 / 2)), (0, 0, 0), -1)
 cv2.putText(screen, "down", (int(KeyCenter[0] - KeyLen / 2), int(KeyCenter[1] + KeyLen * 3 / 2)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
+isflip = False
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    color = file.read()
+    if int(color) == 0: # 黑车
+        isflip = False
+    elif int(color) == 1: # 白车
+        isflip = True
+
 while not stop:
     ret, frame = cap.read()
-    frame = cv2.flip(frame, -1)
+    if isflip:
+        frame = cv2.flip(frame, -1)
     cv2.circle(frame, (LightCenterX, LightCenterY), 5, (255, 0, 0), 2)
     cv2.putText(frame, f"({LightCenterX}, {LightCenterY})", (LightCenterX, LightCenterY), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
     cv2.line(frame, (0, LightCenterY), (640, LightCenterY), (255, 0, 0), 1)
@@ -93,5 +102,3 @@ with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
     item_node.find("x").text = str(LightCenterX)
     item_node.find("y").text = str(LightCenterY)
     paraDomTree.write("../setting/lightCenter.xml")
-
-

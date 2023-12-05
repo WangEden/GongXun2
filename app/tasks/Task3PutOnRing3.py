@@ -11,6 +11,18 @@ def Task3_PutOnRing3(cameraPath: str,
                        sequence: list, 
                        loop: int):
     
+    # 
+    send_dataDMA("run2", 0, 0)
+    # 
+
+    isflip = False
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = file.read()
+        if int(color) == 0: # 黑车
+            isflip = False
+        elif int(color) == 1: # 白车
+            isflip = True
+
     RealDistance = 150 # mm
     PixelDistance = 320 # picel
     distanceRate = RealDistance / PixelDistance
@@ -76,7 +88,8 @@ def Task3_PutOnRing3(cameraPath: str,
     while True:
         # 先锁定中间那个圆环
         ret, frame = cap.read()
-        frame = cv2.flip(frame, -1)
+        if isflip:
+            frame = cv2.flip(frame, -1)
         frame = useRateMWB(frame, RateTuple)
         n = 10
         circlesList = []
@@ -109,6 +122,7 @@ def Task3_PutOnRing3(cameraPath: str,
             dyr = int(distanceRate * dy)
             send_dataDMA(xmlReadCommand("tweak", 1), dxr, dyr)
             queue.put(frame)
+            cv2.imwrite("/home/jetson/GongXun2/app/debug/wt.jpg", frame)
             break
             f = False
         else:

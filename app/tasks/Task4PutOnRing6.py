@@ -11,6 +11,14 @@ def Task4_PutOnRing6(cameraPath: str,
                        sequence: list,
                        loop: int):
 
+    isflip = False
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = file.read()
+        if int(color) == 0: # 黑车 摄像头不反
+            isflip = False
+        elif int(color) == 1: # 白车
+            isflip = True
+
     # while True: # 等待到达三色环区
     #     response = recv_data()
     #     if response == xmlReadCommand("arrive", 0):
@@ -58,7 +66,8 @@ def Task4_PutOnRing6(cameraPath: str,
     while True:
         # 先锁定中间那个圆环
         ret, frame = cap.read()
-        frame = cv2.flip(frame, -1)
+        if isflip:
+            frame = cv2.flip(frame, -1)
         frame = useRateMWB(frame, RateTuple)
         circles = getCircleCenter(frame) # 获取画面中的圆形
         if len(circles) != 0:
