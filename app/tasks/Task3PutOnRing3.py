@@ -33,12 +33,12 @@ def Task3_PutOnRing3(cameraPath: str,
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
 
-    while True: # 等待到达三色环区
-        queue.put(img)
-        response = recv_data()
-        if response == xmlReadCommand("arrive", 0):
-            print("cjgq:", response)
-            break
+    # while True: # 等待到达三色环区
+    #     queue.put(img)
+    #     response = recv_data()
+    #     if response == xmlReadCommand("arrive", 0):
+    #         print("cjgq:", response)
+    #         break
 
     send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
     import time
@@ -87,19 +87,23 @@ def Task3_PutOnRing3(cameraPath: str,
     # 底下那个靠近中间的是绿色色环，如果OPS9没出错
     f = 2
     while True:
-        # 先锁定中间那个圆环
-        ret, frame = cap.read()
-        if isflip:
-            frame = cv2.flip(frame, -1)
-        frame = useRateMWB(frame, RateTuple)
+        # ret, frame = cap.read()
+        # if isflip:
+        #     frame = cv2.flip(frame, -1)
+        # frame = useRateMWB(frame, RateTuple)
         n = 10
         circlesList = []
-        while n:
+        circles = []
+        while n > 0:
+            ret, frame = cap.read()
+            if isflip:
+                frame = cv2.flip(frame, -1)
             circles = getCircleCenter(frame) # 获取画面中的圆形
+            # centerCircle = ()
             if len(circles) != 0:
                 centerCircle = sorted(circles, key=lambda circle: # 离光心最近的圆形
                              pow(circle[0] - XCenter, 2) + pow(circle[1] - YCenter, 2))[0]
-            circlesList.append(tuple([centerCircle[0], centerCircle[1]]))
+                circlesList.append(tuple([centerCircle[0], centerCircle[1]]))
             n -= 1
         
         from utils.VisionUtils import getKmeansCenter
@@ -114,14 +118,14 @@ def Task3_PutOnRing3(cameraPath: str,
         cv2.line(frame, (x, y), (XCenter, YCenter), (255, 255, 255), 2)
         dy = x - XCenter
         dx = y - YCenter
-        if -5 < dx < 5:
-            dx = 0
-        if -5 < dy < 5:
-            dy = 0
+        # if -2 < dx < 2:
+        #     dx = 0
+        # if -2 < dy < 2:
+        #     dy = 0
         # 惯性修正
-        rate = 0.646
+        # rate = 0.646
         if f > 0:
-            dxr = int(distanceRate * dx * rate)
+            dxr = int(distanceRate * dx)
             dyr = int(distanceRate * dy)
             print("dy, dx:", dy, dx)
             cv2.putText(frame, f"(dy:{dy}, dx{dx})", (XCenter, YCenter), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
@@ -130,9 +134,9 @@ def Task3_PutOnRing3(cameraPath: str,
             cv2.imwrite(f"/home/jetson/GongXun2/app/debug/ring{f}_.jpg", frame)
             f -= 1
             time.sleep(2)
-        else:
-            send_dataDMA("0000", dx, dy)
-            queue.put(frame)
+        # else:
+        #     send_dataDMA("0000", dx, dy)
+        #     queue.put(frame)
         if f == 0:
             break
         # 待偏差归零，停止投送画面
@@ -141,19 +145,18 @@ def Task3_PutOnRing3(cameraPath: str,
         #     # send_dataDMA(xmlReadCommand("calibrOk", 1), 0, 0)
         #     queue.put(np.ones((480, 640, 3), np.uint8) * 255)
         #     break
-    else:
-        queue.put(frame)
+
 
     # 微调完等3s
-    time.sleep(2)
-    n = 10
-    while n > 0:
-        ret, frame = cap.read()
-        n -= 1
-    cv2.circle(frame, (XCenter, YCenter), 5, (0, 0, 0), 3)
-    queue.put(frame)
+    # time.sleep(2)
+    # n = 10
+    # while n > 0:
+    ret, frame_ = cap.read()
+        # n -= 1
+    cv2.circle(frame_, (XCenter, YCenter), 5, (0, 0, 0), 3)
+    queue.put(frame_)
     time.sleep(3)
-    cv2.imwrite("/home/jetson/GongXun2/app/debug/ring3.jpg", frame)
+    cv2.imwrite("/home/jetson/GongXun2/app/debug/ring3.jpg", frame_)
     cap.release()
 
 
