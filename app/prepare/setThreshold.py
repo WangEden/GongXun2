@@ -94,7 +94,7 @@ def mouseHandler(e, x, y, f, p):
 
 # 拍摄图片
 # cap = VideoCapture("/dev/cameraInc")
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("/dev/cameraMain")
 from xml.etree import ElementTree
 def xmlReadCapSettings() -> tuple:
     para = {

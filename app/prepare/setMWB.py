@@ -4,7 +4,7 @@ import numpy as np
 import copy
 
 
-cap = cv2.VideoCapture("/dev/video0")
+cap = cv2.VideoCapture("/dev/cameraMain")
 cap.set(3, 640)
 cap.set(4, 480)
 cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))

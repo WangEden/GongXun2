@@ -15,29 +15,29 @@
     </color>
     <color category="green">
         <H>
-            <floor>47</floor>
-            <ceiling>97</ceiling>
+            <floor>58</floor>
+            <ceiling>68</ceiling>
         </H>
         <S>
-            <floor>47</floor>
-            <ceiling>182</ceiling>
+            <floor>100</floor>
+            <ceiling>255</ceiling>
         </S>
         <V>
-            <floor>93</floor>
-            <ceiling>181</ceiling>
+            <floor>78</floor>
+            <ceiling>134</ceiling>
         </V>
     </color>
     <color category="blue">
         <H>
-            <floor>87</floor>
-            <ceiling>130</ceiling>
+            <floor>61</floor>
+            <ceiling>177</ceiling>
         </H>
         <S>
-            <floor>92</floor>
-            <ceiling>189</ceiling>
+            <floor>86</floor>
+            <ceiling>255</ceiling>
         </S>
         <V>
-            <floor>121</floor>
+            <floor>34</floor>
             <ceiling>165</ceiling>
         </V>
     </color>

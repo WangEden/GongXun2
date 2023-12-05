@@ -85,7 +85,7 @@ def Task3_PutOnRing3(cameraPath: str,
     from math import pow
 
     # 底下那个靠近中间的是绿色色环，如果OPS9没出错
-    f = 2
+    f = True
     while True:
         # 先锁定中间那个圆环
         ret, frame = cap.read()
@@ -120,21 +120,19 @@ def Task3_PutOnRing3(cameraPath: str,
             dy = 0
         # 惯性修正
         rate = 0.646
-        if f > 0:
+        if f:
             dxr = int(distanceRate * dx * rate)
             dyr = int(distanceRate * dy)
             print("dy, dx:", dy, dx)
             cv2.putText(frame, f"(dy:{dy}, dx{dx})", (XCenter, YCenter), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             send_dataDMA(xmlReadCommand("tweak", 1), dxr, dyr)
             queue.put(frame)
-            cv2.imwrite(f"/home/jetson/GongXun2/app/debug/ring{f}_.jpg", frame)
-            f -= 1
-            time.sleep(2)
+            cv2.imwrite("/home/jetson/GongXun2/app/debug/ring.jpg", frame)
+            break
+            f = False
         else:
             send_dataDMA("0000", dx, dy)
             queue.put(frame)
-        if f == 0:
-            break
         # 待偏差归零，停止投送画面
         # if abs(dy) < 5 and abs(dx) < 5:
         #     print("准了, 像素误差小于5:", dy, dx)
@@ -195,8 +193,7 @@ def Task3_PutOnRing3(cameraPath: str,
 
 
 if __name__ == "__main__":
-    # queue = Queue()
-    # Task3_PutOnRing3(cameraPath="/dev/cameraMain", 
-    #                  queue=queue, sequence=[1,2,3],loop=1)
-    pass
+    queue = Queue()
+    Task3_PutOnRing3(cameraPath="/dev/cameraMain", 
+                     queue=queue, sequence=[1,2,3],loop=1)
     

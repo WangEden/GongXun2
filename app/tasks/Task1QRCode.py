@@ -12,10 +12,10 @@ def Task1_QRCode(cameraPath: str,
                  sequence: list,
                  qr_result: Array, 
                  lock: Lock):
-    
+
     from pyzbar.pyzbar import decode
-    # cap = cv2.VideoCapture(cameraPath)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(cameraPath)
+    # cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
         if not ret:

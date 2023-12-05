@@ -21,6 +21,10 @@
     <ringGreen>setG</ringGreen>
     <ringBlue>setB</ringBlue>
 
+    <!-- 从色环上取回物块 -->
+    <reviewRed>qrsh</reviewRed>
+    <reviewGreen>qgsh</reviewGreen>
+    <reviewBlue>qbsh</reviewBlue>
     
     
     <!-- 抓红色 -->

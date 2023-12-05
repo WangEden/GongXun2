@@ -51,7 +51,7 @@ def Task2_GetFromPlate(cameraPath: str,
     CapSetting = xmlReadCapSettings()
     RateTuple = xmlReadRateTuple()
     
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(cameraPath)
     a = cap.set(3, 640)
     a = cap.set(4, 480)
     a = cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
@@ -142,7 +142,7 @@ def Task2_GetFromPlate(cameraPath: str,
                 if max_index == rank[0]: # 颜色和当前的匹配
                     send_cmd(xmlReadCommand(f"plate{COLOR[max_index]}", 0))
                     print("catch from plate: ", COLOR[max_index])
-                    cv2.imwrite(f"/home/jetson/GongXun2/app/debug/plate{COLOR[max_index]}", img)
+                    cv2.imwrite(f"/home/jetson/GongXun2/app/debug/plate{COLOR[max_index]}.jpg", img)
                     rank.remove(max_index)
                     queue.put(img)
                     # 等待抓放完成
@@ -156,7 +156,7 @@ def Task2_GetFromPlate(cameraPath: str,
                     break
 
     # 等最后一个物块抓完
-    time.sleep(8)
+    time.sleep(4)
 
     cap.release()
     blank = np.ones((480, 640, 3), np.uint8) * 255

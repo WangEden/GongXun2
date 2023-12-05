@@ -50,7 +50,7 @@ def Task4_PutOnRing6(cameraPath: str,
     RateTuple = xmlReadRateTuple()
     
     # 设置相机参数
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(cameraPath)
     a = cap.set(3, 640)
     a = cap.set(4, 480)
     a = cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))

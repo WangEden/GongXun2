@@ -45,7 +45,7 @@ cv2.setWindowProperty("screen", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 cv2.setMouseCallback("screen", stopHandler)
 
 
-cap = cv2.VideoCapture("/dev/video0")
+cap = cv2.VideoCapture("/dev/cameraMain")
 a = cap.set(3, 640)
 a = cap.set(4, 480)
 a = cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))

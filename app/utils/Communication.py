@@ -54,8 +54,15 @@ def send_cmd(cmd: str):
 
 
 def recv_data():
-    return uart.read(6).decode("utf-8", 'ignore')[0:4]
+    response = uart.read(6)
+    print("chuangkou byte:", response)
+    if len(response) >= 4:
+        r = response.decode("utf-8", "ignore")[0:4]
+        print("chuangkou: ", r)
+        return r
 
 
 if __name__ == "__main__":
-    pass
+    while True:
+        response = recv_data()
+        print("return:", response)

@@ -59,7 +59,8 @@ def process_task(queue: Queue, lock: Lock, continue_: Value):
     from tasks.Task1QRCode import Task1_QRCode
     Task1_QRCode(camera1_path, image_queue, sequence, qr_result, lock)
     del Task1_QRCode
-    
+    # sequence = [1, 2, 3, 1, 2, 3]
+
     # 执行任务二 从圆盘取物块
     from tasks.Task2GetFromPlate import Task2_GetFromPlate
     Task2_GetFromPlate(camera2_path, image_queue, sequence, 1)

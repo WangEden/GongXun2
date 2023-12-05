@@ -4,7 +4,7 @@ import copy
 from xml.etree import ElementTree
 
 
-cap = cv2.VideoCapture("/dev/video0")
+cap = cv2.VideoCapture("/dev/cameraMain")
 cap.set(3, 640)
 cap.set(4, 480)
 cap.set(6, cv2.VideoWriter.fourcc(*'MJPG'))
@@ -73,7 +73,7 @@ while True:
     if stop:
         # 保存相机参数
         paraDomTree = ElementTree.parse("./setting/capSetting.xml")
-        paraDomTree.find("brightness").text = str(brightness - 100.0)
+        paraDomTree.find("brightness").text = str(brightness)
         paraDomTree.find("contrast").text = str(contrast - 0.0)
         paraDomTree.find("saturation").text = str(saturation - 0.0)
         paraDomTree.find("hue").text = str(hue - 0.0)
