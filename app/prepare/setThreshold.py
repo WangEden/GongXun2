@@ -15,13 +15,13 @@ color = "blue"
 flag = True
 change = True
 
-
+color_ = 0
 isflip = False
 with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
-    color = file.read()
-    if int(color) == 0: # 黑车
+    color_ = int(file.read())
+    if int(color_) == 0: # 黑车
         isflip = False
-    elif int(color) == 1: # 白车
+    elif int(color_) == 1: # 白车
         isflip = True
 
 def choose_para1(e, x, y, f, p):
@@ -106,14 +106,20 @@ def mouseHandler(e, x, y, f, p):
 cap = cv2.VideoCapture("/dev/cameraMain")
 from xml.etree import ElementTree
 def xmlReadCapSettings() -> tuple:
+    global color_
     para = {
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
+    item_node = None
     paraDomTree = ElementTree.parse("../setting/capSetting.xml")
+    if color_ == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color_ == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 capSetting = xmlReadCapSettings()
 cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
@@ -122,14 +128,20 @@ cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
 cap.set(cv2.CAP_PROP_HUE, capSetting[3])
 
 def xmlReadRateTuple() -> tuple:
+    global color_
     para = {
         0: "rateb", 1: "rateg", 2: "rater"
     }
     result = []
+    item_node = None
     paraDomTree = ElementTree.parse("../setting/rateTuple.xml")
+    if color_ == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color_ == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(3):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 rateTuple = xmlReadRateTuple()
@@ -162,9 +174,9 @@ def xmlReadItemThreshold(_: str):  # rank: [min:[], max:[]]
         __ = int(file.read())
     paraDomTree = None
     if __ == 0:
-        paraDomTree = ElementTree.parse("./setting/thresholdItemBlack.xml")
+        paraDomTree = ElementTree.parse("../setting/thresholdItemBlack.xml")
     elif __ == 1:
-        paraDomTree = ElementTree.parse("./setting/thresholdItemWhite.xml")
+        paraDomTree = ElementTree.parse("../setting/thresholdItemWhite.xml")
     colorNode = paraDomTree.find(f'color[@category="{_}"]')
     floors = colorNode.findall('./*/floor')
     ceilings = colorNode.findall('./*/ceiling')

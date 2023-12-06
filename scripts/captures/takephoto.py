@@ -16,15 +16,24 @@ with open("./img.txt", "r") as file:
 
 
 from xml.etree import ElementTree
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    color_ = int(file.read())
 def xmlReadCapSettings() -> tuple:
+    global color_
     para = {
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
     paraDomTree = ElementTree.parse("../../app/setting/capSetting.xml")
+    item_node = None
+    if color_ == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color_ == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
+    
     for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 
@@ -41,9 +50,15 @@ def useRateMWB(img: np.ndarray, rateTuple: tuple):
 capSetting = xmlReadCapSettings()
 # 调整白平衡
 paraDomTree = ElementTree.parse("../../app/setting/rateTuple.xml")
-rateb = float(paraDomTree.find("rateb").text)
-rateg = float(paraDomTree.find("rateg").text)
-rater = float(paraDomTree.find("rater").text)
+item_node = None
+if color_ == 0:
+    item_node = paraDomTree.find(f'color[@tag="black"]')
+elif color_ == 1:
+    item_node = paraDomTree.find(f'color[@tag="white"]')
+
+rateb = float(item_node.find("rateb").text)
+rateg = float(item_node.find("rateg").text)
+rater = float(item_node.find("rater").text)
 rateTuple = (rateb, rateg, rater)
 
 # cap = cv2.VideoCapture(0)
