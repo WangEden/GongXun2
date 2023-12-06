@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-filename = './imgs/HSVTestResult.jpg'
+filename = './captures/take4.jpg'
 
 
 def callback(event):
@@ -67,6 +67,8 @@ def Choose_Color():
         upper_hsv = np.array([H_max, S_max, V_max])
 
         mask = cv2.inRange(img, lower_hsv, upper_hsv)
+        print("lower_hsv", lower_hsv)
+        print("upper_hsv", upper_hsv)
 
         # print("H_min = %d,H_max = %d,S_min = %d,S_max = %d,V_min = %d,V_max = %d"%(H_min,H_max,S_min,S_max,V_min,V_max))
 
