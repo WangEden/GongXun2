@@ -13,6 +13,7 @@ def xmlReadCommand(tag: str, mode: int):
 
 def xmlReadItemThreshold(color: str):  # rank: [min:[], max:[]]
     _min, _max = [], []
+    
     paraDomTree = ElementTree.parse("./setting/thresholdItem.xml")
     colorNode = paraDomTree.find(f'color[@category="{color}"]')
     floors = colorNode.findall('./*/floor')

@@ -135,7 +135,7 @@ def Task4_PutOnRing6(cameraPath: str,
             img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
             print(f"在色环放{COLOR2[c]}物块")
             # 等放完
-            time.sleep(10)
+            time.sleep(14)
     elif loop == 2:
         for c in rank:
             send_dataDMA(xmlReadCommand(f"md{COLOR[c]}", 1), 0, 0)
@@ -143,7 +143,7 @@ def Task4_PutOnRing6(cameraPath: str,
             img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
             print(f"在色环放{COLOR2[c]}物块")
             # 等放完
-            time.sleep(10)
+            time.sleep(14)
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
     send_dataDMA("rwwc", 0, 0)

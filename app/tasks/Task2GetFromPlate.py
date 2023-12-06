@@ -156,7 +156,7 @@ def Task2_GetFromPlate(cameraPath: str,
                     break
 
     # 等最后一个物块抓完
-    time.sleep(4)
+    time.sleep(6)
 
     cap.release()
     blank = np.ones((480, 640, 3), np.uint8) * 255
