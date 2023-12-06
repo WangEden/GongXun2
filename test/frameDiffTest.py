@@ -2,14 +2,14 @@
 import cv2
 
 # 视频文件输入初始化
-filename = "E:/opencv_vs/opencv/sources/samples/data/vtest.avi"
+filename = "./output.avi"
 camera = cv2.VideoCapture(filename)
 
 # 视频文件输出参数设置
 out_fps = 12.0  # 输出文件的帧率
 fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', '2')
-out1 = cv2.VideoWriter('E:/video/v3.avi', fourcc, out_fps, (500, 400))
-out2 = cv2.VideoWriter('E:/video/v4.avi', fourcc, out_fps, (500, 400))
+out1 = cv2.VideoWriter('./v3.avi', fourcc, out_fps, (500, 400))
+out2 = cv2.VideoWriter('./v4.avi', fourcc, out_fps, (500, 400))
 
 # 初始化当前帧的前两帧
 lastFrame1 = None
@@ -52,14 +52,15 @@ while camera.isOpened():
     thresh = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
 
     # 图像二值化
-    thresh = cv2.threshold(thresh, 25, 255, cv2.THRESH_BINARY)[1]
+    t2, thresh = cv2.threshold(thresh, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    # thresh = cv2.threshold(thresh, 0, 255, cv2.THRESH_BINARY)[1]
 
     # 去除图像噪声,先腐蚀再膨胀(形态学开运算)
     thresh = cv2.dilate(thresh, None, iterations=3)
     thresh = cv2.erode(thresh, None, iterations=1)
 
     # 阀值图像上的轮廓位置
-    binary, cnts, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # 遍历轮廓
     for c in cnts:
