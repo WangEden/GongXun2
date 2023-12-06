@@ -25,6 +25,13 @@ clickCnt = 2
 mwbRect = []
 stop = False
 
+isflip = False
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    color = file.read()
+    if int(color) == 0: # 黑车
+        isflip = False
+    elif int(color) == 1: # 白车
+        isflip = True
 
 def perfectReflection(img: np.ndarray): # 谨记要使用numpy优化
     use1 = copy.deepcopy(img).astype(np.int64)
@@ -154,6 +161,8 @@ if __name__ == "__main__":
 
     while True:
         ret, frame = cap.read()
+        if isflip:
+            frame = cv2.flip(frame, -1)
         gain_img = useRateMWB(frame, rateTuple)
         out = np.hstack([frame, gain_img])
         out = cv2.resize(out, (int(out.shape[1] / 3 * 2), int(out.shape[0] / 3 * 2)))
@@ -164,3 +173,4 @@ if __name__ == "__main__":
             break
         if cv2.waitKey(24) & 0XFF == ord('q'):
             break
+    cap.release()

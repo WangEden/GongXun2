@@ -24,6 +24,15 @@ def callback(event):
     pass
 
 
+isflip = False
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    color = file.read()
+    if int(color) == 0: # 黑车
+        isflip = False
+    elif int(color) == 1: # 白车
+        isflip = True
+
+
 stop = False
 def stopHandle(e, x, y, f, p):
     global stop
@@ -80,6 +89,8 @@ while True:
     cap.set(cv2.CAP_PROP_HUE, hue)
 
     ret, frame = cap.read()
+    if isflip:
+        frame = cv2.flip(frame, -1)
     frame = useRateMWB(frame, rateTuple)
     frame = cv2.GaussianBlur(frame, (3, 3), 0)
 
@@ -107,3 +118,4 @@ while True:
     cv2.imshow("img", out)
     cv2.setMouseCallback("img", stopHandle)
     cv2.waitKey(25)
+cap.release()

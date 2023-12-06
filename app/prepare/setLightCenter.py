@@ -102,3 +102,4 @@ with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
     item_node.find("x").text = str(LightCenterX)
     item_node.find("y").text = str(LightCenterY)
     paraDomTree.write("../setting/lightCenter.xml")
+cap.release()

@@ -15,6 +15,15 @@ color = "blue"
 flag = True
 change = True
 
+
+isflip = False
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    color = file.read()
+    if int(color) == 0: # 黑车
+        isflip = False
+    elif int(color) == 1: # 白车
+        isflip = True
+
 def choose_para1(e, x, y, f, p):
     global category, flag
     if e == cv2.EVENT_LBUTTONDOWN:
@@ -128,7 +137,8 @@ rateTuple = xmlReadRateTuple()
 
 # cv2.imwrite("take.jpg", img)
 ret, img = cap.read()
-cap.release()
+if isflip:
+    img = cv2.flip(img, -1)
 
 # 找到结点
 paraDomTree = ElementTree.parse(f"../setting/threshold{category}.xml")
@@ -214,3 +224,6 @@ if change:
     ceilings[1].text = str(S_max)
     ceilings[2].text = str(V_max)
     paraDomTree.write(f"../setting/threshold{category}.xml")
+
+
+cap.release()
