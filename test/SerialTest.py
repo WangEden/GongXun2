@@ -54,17 +54,27 @@ def recv_data():
     return uart.read().decode("utf-8", 'ignore')
 
 
+def recv_data():
+    response = uart.read(4)
+    print("chuangkou byte:", response)
+    if len(response) >= 4:
+        r = response.decode("utf-8", "ignore")[0:4]
+        print("chuangkou: ", r)
+        return r
+
+
 if __name__ == "__main__":
-    send_dataDMA("setg", 0, 0)
-    # send_dataDMA("ba  ", 0, 0)
+    send_dataDMA("buaa", 120, -304)
+    # send_dataDMA("ba  ", 0, 0) -32767 -32767
 
     # send_dataDMA("QROK", 1, 1)
     # while True:
-    #     response = uart.read(6).decode("utf-8", 'ignore')[0:4]
+    #     response = recv_data()
+    #     # response = uart.read(4).decode("utf-8", 'ignore')[0:4]
     #     print("response", response)
         # uart.write(response)
         # if response == "":
         #     print("")
         # else:
         #     pass
-            # print("waiting...")
+        #     print("waiting...")

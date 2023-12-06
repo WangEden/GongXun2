@@ -11,7 +11,19 @@ def Task2_GetFromPlate(cameraPath: str,
                        sequence: list, 
                        loop: int):
     
+    while True: # 等待到达原料区
+        response = recv_data()
+        if response == xmlReadCommand("arrive", 0):
+            print("等待到达圆盘response:", response, end='\r')
+            break
+    
     blank = np.ones((480, 640, 3), np.uint8) * 255
+
+
+
+    from utils.VisionUtils import cv2AddChineseText
+    img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
+    queue.put(img)
 
     isflip = False
     with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
@@ -20,16 +32,6 @@ def Task2_GetFromPlate(cameraPath: str,
             isflip = False
         elif int(color) == 1: # 白车
             isflip = True
-
-    from utils.VisionUtils import cv2AddChineseText
-    img = cv2AddChineseText(blank, f"去圆盘", (384, 200), (0, 0, 0), 45)
-
-    while True: # 等待到达原料区
-        queue.put(img)
-        response = recv_data()
-        if response == xmlReadCommand("arrive", 0):
-            print("等待到达圆盘response:", response, end='\r')
-            break
 
     # 读取抓取顺序
     if loop == 1:
@@ -156,7 +158,7 @@ def Task2_GetFromPlate(cameraPath: str,
                     break
 
     # 等最后一个物块抓完
-    time.sleep(6)
+    time.sleep(2)
 
     cap.release()
     blank = np.ones((480, 640, 3), np.uint8) * 255

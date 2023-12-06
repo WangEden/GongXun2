@@ -143,7 +143,7 @@ def Task4_PutOnRing6(cameraPath: str,
             img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
             print(f"在色环放{COLOR2[c]}物块")
             # 等放完
-            time.sleep(12)
+            time.sleep(11)
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
 
