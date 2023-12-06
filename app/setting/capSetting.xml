@@ -1,6 +1,14 @@
 <capSetting>
-    <brightness>-64.0</brightness>
-    <contrast>56.0</contrast>
-    <saturation>84.0</saturation>
-    <hue>0.0</hue>
+    <color tag="white">
+        <brightness>-58.0</brightness>
+        <contrast>44.0</contrast>
+        <saturation>37.0</saturation>
+        <hue>0.0</hue>
+    </color>
+    <color tag="black">
+        <brightness>-58.0</brightness>
+        <contrast>44.0</contrast>
+        <saturation>37.0</saturation>
+        <hue>0.0</hue>
+    </color>
 </capSetting>

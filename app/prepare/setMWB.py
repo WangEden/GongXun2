@@ -26,8 +26,10 @@ mwbRect = []
 stop = False
 
 isflip = False
+color = 0
+COLOR = {0: "black", 1: "white"}
 with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
-    color = file.read()
+    color = int(file.read())
     if int(color) == 0: # 黑车
         isflip = False
     elif int(color) == 1: # 白车
@@ -127,14 +129,20 @@ def stopHandle(e, x, y, f, p):
 
 from xml.etree import ElementTree
 def xmlReadCapSettings() -> tuple:
+    global color
     para = {
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
     paraDomTree = ElementTree.parse("../setting/capSetting.xml")
+    item_node = None
+    if color == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 
@@ -149,9 +157,14 @@ if __name__ == "__main__":
     rateTuple = getRateBGR()
 
     paraDomTree = ElementTree.parse("../setting/rateTuple.xml")
-    rateb_node = paraDomTree.find("rateb")
-    rateg_node = paraDomTree.find("rateg")
-    rater_node = paraDomTree.find("rater")
+    item_node = None
+    if color == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
+    rateb_node = item_node.find("rateb")
+    rateg_node = item_node.find("rateg")
+    rater_node = item_node.find("rater")
     rateb_node.text = str(rateTuple[0])
     rateg_node.text = str(rateTuple[1])
     rater_node.text = str(rateTuple[2])

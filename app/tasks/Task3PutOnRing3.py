@@ -40,7 +40,7 @@ def Task3_PutOnRing3(cameraPath: str,
             print("cjgq:", response)
             break
 
-    send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
+    # send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
     import time
     # 等待机械臂运动
     time.sleep(2)
@@ -110,7 +110,7 @@ def Task3_PutOnRing3(cameraPath: str,
         circless = getKmeansCenter(1, circlesList)
         x, y = circless[0]
         
-        # 进行微调，不断发送偏差，不等回复，注意限制范围
+        # 进行微调，发送偏差，不等回复，注意限制范围
         cv2.circle(frame, (XCenter, YCenter), 5, (255, 255, 255), 3)
         x, y, r = centerCircle
         cv2.circle(frame, (x, y), 5, (255, 128, 64), 3)
@@ -133,7 +133,7 @@ def Task3_PutOnRing3(cameraPath: str,
             queue.put(frame)
             cv2.imwrite(f"/home/jetson/GongXun2/app/debug/ring{f}_.jpg", frame)
             f -= 1
-            time.sleep(2)
+            time.sleep(3)
         # else:
         #     send_dataDMA("0000", dx, dy)
         #     queue.put(frame)
@@ -156,7 +156,7 @@ def Task3_PutOnRing3(cameraPath: str,
     cv2.circle(frame_, (XCenter, YCenter), 5, (0, 0, 0), 3)
     queue.put(frame_)
     time.sleep(3)
-    cv2.imwrite("/home/jetson/GongXun2/app/debug/ring3.jpg", frame_)
+    cv2.imwrite("/home/jetson/GongXun2/app/debug/ring13.jpg", frame_)
     cap.release()
 
 
@@ -174,6 +174,7 @@ def Task3_PutOnRing3(cameraPath: str,
         # 等放完
         time.sleep(10)
 
+    time.sleep(1)
 
     for c in rank:
         send_dataDMA(xmlReadCommand(f"review{COLOR[c]}", 1), 0, 0)

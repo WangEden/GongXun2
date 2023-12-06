@@ -25,8 +25,10 @@ def callback(event):
 
 
 isflip = False
+color = 0
+COLOR = {0: "black", 1: "white"}
 with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
-    color = file.read()
+    color = int(file.read())
     if int(color) == 0: # 黑车
         isflip = False
     elif int(color) == 1: # 白车
@@ -42,14 +44,20 @@ def stopHandle(e, x, y, f, p):
 
 from xml.etree import ElementTree
 def xmlReadCapSettings() -> tuple:
+    global color
     para = {
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
     paraDomTree = ElementTree.parse("../setting/capSetting.xml")
+    item_node = None
+    if color == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 capSetting = xmlReadCapSettings()
@@ -71,9 +79,14 @@ def useRateMWB(img: np.ndarray, rateTuple: tuple):
 
 # 调整白平衡
 paraDomTree = ElementTree.parse("../setting/rateTuple.xml")
-rateb = float(paraDomTree.find("rateb").text)
-rateg = float(paraDomTree.find("rateg").text)
-rater = float(paraDomTree.find("rater").text)
+item_node = None
+if color == 0:
+    item_node = paraDomTree.find(f'color[@tag="black"]')
+elif color == 1:
+    item_node = paraDomTree.find(f'color[@tag="white"]')
+rateb = float(item_node.find("rateb").text)
+rateg = float(item_node.find("rateg").text)
+rater = float(item_node.find("rater").text)
 rateTuple = (rateb, rateg, rater)
 # rateTuple = (0.9953363416315475, 0.9660302745350318, 0.9843837281643676)
 
@@ -104,10 +117,15 @@ while True:
     if stop:
         # 保存相机参数
         paraDomTree = ElementTree.parse("../setting/capSetting.xml")
-        paraDomTree.find("brightness").text = str(brightness_)
-        paraDomTree.find("contrast").text = str(contrast - 0.0)
-        paraDomTree.find("saturation").text = str(saturation - 0.0)
-        paraDomTree.find("hue").text = str(hue - 0.0)
+        item_node = None
+        if color == 0:
+            item_node = paraDomTree.find(f'color[@tag="black"]')
+        elif color == 1:
+            item_node = paraDomTree.find(f'color[@tag="white"]')
+        item_node.find("brightness").text = str(brightness_)
+        item_node.find("contrast").text = str(contrast - 0.0)
+        item_node.find("saturation").text = str(saturation - 0.0)
+        item_node.find("hue").text = str(hue - 0.0)
         paraDomTree.write("../setting/capSetting.xml")
         break
 

@@ -73,9 +73,17 @@ def xmlReadCapSettings() -> tuple:
     }
     result = []
     paraDomTree = ElementTree.parse("./setting/capSetting.xml")
+    item_node = None
+    color = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = int(file.read())
+    if color == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(4):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 
@@ -85,9 +93,17 @@ def xmlReadRateTuple() -> tuple:
     }
     result = []
     paraDomTree = ElementTree.parse("./setting/rateTuple.xml")
+    item_node = None
+    color = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        color = int(file.read())
+    if color == 0:
+        item_node = paraDomTree.find(f'color[@tag="black"]')
+    elif color == 1:
+        item_node = paraDomTree.find(f'color[@tag="white"]')
     for i in range(3):
-        item_node = paraDomTree.find(para[i])
-        result.append(float(item_node.text))
+        item = item_node.find(para[i])
+        result.append(float(item.text))
     return tuple(result)
 
 

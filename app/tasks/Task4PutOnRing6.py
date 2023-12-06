@@ -66,38 +66,64 @@ def Task4_PutOnRing6(cameraPath: str,
     from utils.MWB import useRateMWB
     from utils.VisionUtils import getCircleCenter, cv2AddChineseText
     from math import pow
+    import time
 
+    RealDistance = 150 # mm
+    PixelDistance = 320 # picel
+    distanceRate = RealDistance / PixelDistance
+
+    f = 2
     # 底下那个靠近中间的是绿色色环，如果OPS9没出错
     while True:
-        # 先锁定中间那个圆环
-        ret, frame = cap.read()
-        if isflip:
-            frame = cv2.flip(frame, -1)
-        frame = useRateMWB(frame, RateTuple)
-        circles = getCircleCenter(frame) # 获取画面中的圆形
-        if len(circles) != 0:
-            centerCircle = sorted(circles, key=lambda circle: # 离光心最近的圆形
+        n = 10
+        circlesList = []
+        circles = []
+        while n > 0:
+            ret, frame = cap.read()
+            if isflip:
+                frame = cv2.flip(frame, -1)
+            circles = getCircleCenter(frame) # 获取画面中的圆形
+            # centerCircle = ()
+            if len(circles) != 0:
+                centerCircle = sorted(circles, key=lambda circle: # 离光心最近的圆形
                              pow(circle[0] - XCenter, 2) + pow(circle[1] - YCenter, 2))[0]
-        # 进行微调，不断发送偏差，不等回复，注意限制范围
-            cv2.circle(frame, (XCenter, YCenter), 5, (255, 255, 255), 3)
-            x, y, r = centerCircle
-            cv2.circle(frame, (x, y), r, (255, 128, 64), 3)
-            dx = -(x - XCenter)
-            dy = y - YCenter
-            print("dy, dx:", dy, dx)
-            send_data(xmlReadCommand("tweak", 0), dx, dy)
-            queue.put(frame)
-        # 待偏差归零，停止投送画面
-            if abs(dy) < 5 and abs(dx) < 5:
-                print("准了, 像素误差小于5", dy, dx)
-                send_cmd(xmlReadCommand("calibrOk", 0))
-                queue.put(np.ones((480, 640, 3), np.uint8) * 255)
-                break
-    cap.release()
+                circlesList.append(tuple([centerCircle[0], centerCircle[1]]))
+            n -= 1
+        
+        from utils.VisionUtils import getKmeansCenter
+        circless = getKmeansCenter(1, circlesList)
+        x, y = circless[0]   
 
-    import time
-    # 微调完等1s
-    time.sleep(1)
+        # 进行微调，发送偏差，不等回复，注意限制范围
+        cv2.circle(frame, (XCenter, YCenter), 5, (255, 255, 255), 3)
+        x, y, r = centerCircle
+        cv2.circle(frame, (x, y), 5, (255, 128, 64), 3)
+        cv2.circle(frame, (x, y), r, (255, 128, 64), 3)
+        cv2.line(frame, (x, y), (XCenter, YCenter), (255, 255, 255), 2)
+
+        dx = -(x - XCenter)
+        dy = y - YCenter
+        
+        if f > 0:
+            dxr = int(distanceRate * dx)
+            dyr = int(distanceRate * dy)
+            print("dy, dx:", dy, dx)
+            cv2.putText(frame, f"(dy:{dy}, dx{dx})", (XCenter, YCenter), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            send_dataDMA(xmlReadCommand("tweak", 1), dxr, dyr)
+            queue.put(frame)
+            cv2.imwrite(f"/home/jetson/GongXun2/app/debug/ring{f}_.jpg", frame)
+            f -= 1
+            time.sleep(3)
+        if f == 0:
+            break
+
+    # 微调完等3s
+    ret, frame_ = cap.read()
+    cv2.circle(frame_, (XCenter, YCenter), 5, (0, 0, 0), 3)
+    queue.put(frame_)
+    time.sleep(3)
+    cv2.imwrite("/home/jetson/GongXun2/app/debug/ring46.jpg", frame_)
+    cap.release()
 
     # 按顺序放置和拿起物块，画面显示正在做的事
     COLOR = {0: "Red", 1: "Green", 2: "Blue"}
@@ -120,7 +146,7 @@ def Task4_PutOnRing6(cameraPath: str,
             time.sleep(10)
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
-    
+    send_dataDMA("rwwc", 0, 0)
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去圆盘取第二轮物块", (384, 200), (0, 0, 0), 45)
     queue.put(img)

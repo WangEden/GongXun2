@@ -9,7 +9,7 @@ def stopHandle(e, x, y, f, p):
         stop = True
 
 n = [0]
-with open("./captures/img.txt", "r") as file:
+with open("./img.txt", "r") as file:
     s = file.read()
     n[0] = int(s)
     print(s)
@@ -21,7 +21,7 @@ def xmlReadCapSettings() -> tuple:
         0: "brightness", 1: "contrast", 2: "saturation", 3: "hue"
     }
     result = []
-    paraDomTree = ElementTree.parse("../app/setting/capSetting.xml")
+    paraDomTree = ElementTree.parse("../../app/setting/capSetting.xml")
     for i in range(4):
         item_node = paraDomTree.find(para[i])
         result.append(float(item_node.text))
@@ -40,7 +40,7 @@ def useRateMWB(img: np.ndarray, rateTuple: tuple):
 
 capSetting = xmlReadCapSettings()
 # 调整白平衡
-paraDomTree = ElementTree.parse("../app/setting/rateTuple.xml")
+paraDomTree = ElementTree.parse("../../app/setting/rateTuple.xml")
 rateb = float(paraDomTree.find("rateb").text)
 rateg = float(paraDomTree.find("rateg").text)
 rater = float(paraDomTree.find("rater").text)
@@ -55,7 +55,6 @@ cap.set(cv2.CAP_PROP_BRIGHTNESS, capSetting[0])
 cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
 cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
 cap.set(cv2.CAP_PROP_HUE, capSetting[3])
-
 
 isflip = False
 with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
@@ -80,13 +79,13 @@ while n[0] > 0:
     cv2.imshow("img", frame)
     cv2.setMouseCallback("img", stopHandle)
     if cv2.waitKey(10) & 0xFF == ord("q"):
-        cv2.imwrite(f"./{n[0]}.jpg", frame)
-        with open("./captures/img.txt", "w") as file:
+        cv2.imwrite(f"./img{n[0]}.jpg", frame)
+        with open("./img.txt", "w") as file:
             file.write(str(n[0] + 1))
         n[0] = 0
     
     if stop:
-        cv2.imwrite(f"./captures/take{n[0]}.jpg", frame)
-        with open("./captures/img.txt", "w") as file:
+        cv2.imwrite(f"./take{n[0]}.jpg", frame)
+        with open("./img.txt", "w") as file:
             file.write(str(n[0] + 1))
             break

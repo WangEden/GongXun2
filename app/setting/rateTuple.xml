@@ -1,5 +1,12 @@
 <rate>
-    <rateb>0.9328025408427418</rateb>
-    <rateg>0.8921534828813511</rateg>
-    <rater>0.9321030535623313</rater>
+    <color tag="white">
+        <rateb>0.905686595277669</rateb>
+        <rateg>0.8708111535489773</rateg>
+        <rater>0.8998839912730884</rater>
+    </color>
+    <color tag="black">
+        <rateb>0.905686595277669</rateb>
+        <rateg>0.8708111535489773</rateg>
+        <rater>0.8998839912730884</rater>
+    </color>
 </rate>
