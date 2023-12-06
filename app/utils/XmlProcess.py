@@ -13,8 +13,14 @@ def xmlReadCommand(tag: str, mode: int):
 
 def xmlReadItemThreshold(color: str):  # rank: [min:[], max:[]]
     _min, _max = [], []
-    
-    paraDomTree = ElementTree.parse("./setting/thresholdItem.xml")
+    _ = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        _ = int(file.read())
+    paraDomTree = None
+    if _ == 0:
+        paraDomTree = ElementTree.parse("./setting/thresholdItemBlack.xml")
+    elif _ == 1:
+        paraDomTree = ElementTree.parse("./setting/thresholdItemWhite.xml")
     colorNode = paraDomTree.find(f'color[@category="{color}"]')
     floors = colorNode.findall('./*/floor')
     ceilings = colorNode.findall('./*/ceiling')
@@ -46,7 +52,14 @@ def xmlReadItemThreshold(color: str):  # rank: [min:[], max:[]]
 
 def xmlReadRingThreshold(color: str):  # rank: [min:[], max:[]]
     _min, _max = [], []
-    paraDomTree = ElementTree.parse("./setting/thresholdRing.xml")
+    _ = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        _ = int(file.read())
+    paraDomTree = None
+    if _ == 0:
+        paraDomTree = ElementTree.parse("./setting/thresholdRingBlack.xml")
+    elif _ == 1:
+        paraDomTree = ElementTree.parse("./setting/thresholdRingWhite.xml")
     colorNode = paraDomTree.find(f'color[@category="{color}"]')
     floors = colorNode.findall('./*/floor')
     ceilings = colorNode.findall('./*/ceiling')
@@ -123,4 +136,5 @@ def xmlReadLightCenter():
 
 
 if __name__ == "__main__":
-    print(xmlReadLightCenter())
+    l = []
+    print(xmlReadRingThreshold("green"))
