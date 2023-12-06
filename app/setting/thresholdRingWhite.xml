@@ -1,0 +1,44 @@
+<threshold tag="ring">
+    <color category="red">
+        <H>
+            <ceiling>169</ceiling>
+            <floor>146</floor>
+        </H>
+        <S>
+            <ceiling>126</ceiling>
+            <floor>36</floor>
+        </S>
+        <V>
+            <ceiling>255</ceiling>
+            <floor>0</floor>
+        </V>
+    </color>
+    <color category="green">
+        <H>
+            <ceiling>89</ceiling>
+            <floor>34</floor>
+        </H>
+        <S>
+            <ceiling>158</ceiling>
+            <floor>35</floor>
+        </S>
+        <V>
+            <ceiling>144</ceiling>
+            <floor>86</floor>
+        </V>
+    </color>
+    <color category="blue">
+        <H>
+            <ceiling>122</ceiling>
+            <floor>114</floor>
+        </H>
+        <S>
+            <ceiling>101</ceiling>
+            <floor>46</floor>
+        </S>
+        <V>
+            <ceiling>255</ceiling>
+            <floor>0</floor>
+        </V>
+    </color>
+</threshold>

@@ -140,8 +140,15 @@ ret, img = cap.read()
 if isflip:
     img = cv2.flip(img, -1)
 
+_ = 0
+with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+    _ = int(file.read())
+paraDomTree = None
 # 找到结点
-paraDomTree = ElementTree.parse(f"../setting/threshold{category}.xml")
+if _ == 0:
+    paraDomTree = ElementTree.parse(f"../setting/threshold{category}Black.xml")
+elif _ == 1:
+    paraDomTree = ElementTree.parse(f"../setting/threshold{category}White.xml")
 # threshold_node = paraDomTree.find(f'threshold[@tag="{category}"]')
 color_node = paraDomTree.find(f'color[@category="{color}"]')
 floors = color_node.findall('./*/floor')
@@ -150,7 +157,14 @@ ceilings = color_node.findall('./*/ceiling')
 
 def xmlReadItemThreshold(_: str):  # rank: [min:[], max:[]]
     _min, _max = [], []
-    paraDomTree = ElementTree.parse("../setting/thresholdItem.xml")
+    __ = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        __ = int(file.read())
+    paraDomTree = None
+    if __ == 0:
+        paraDomTree = ElementTree.parse("./setting/thresholdItemBlack.xml")
+    elif __ == 1:
+        paraDomTree = ElementTree.parse("./setting/thresholdItemWhite.xml")
     colorNode = paraDomTree.find(f'color[@category="{_}"]')
     floors = colorNode.findall('./*/floor')
     ceilings = colorNode.findall('./*/ceiling')
@@ -223,7 +237,14 @@ if change:
     ceilings[0].text = str(H_max)
     ceilings[1].text = str(S_max)
     ceilings[2].text = str(V_max)
-    paraDomTree.write(f"../setting/threshold{category}.xml")
+    _ = 0
+    with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
+        _ = int(file.read())
+    if _ == 0:
+        paraDomTree.write(f"../setting/threshold{category}Black.xml")
+    elif _ == 1:
+        paraDomTree.write(f"../setting/threshold{category}White.xml")
+
 
 
 cap.release()
