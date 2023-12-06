@@ -43,7 +43,8 @@ while True:
     # img_binary = cv2.adaptiveThreshold(~img_gray, 255,
     #                             cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 15, -5)
     t2, img_binary = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    cv2.imshow("bin", img_binary)
+    # img_binary = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 25, 10)
+    cv2.imshow("bin", ~img_binary)
     cv2.waitKey(4)
     if stop:
         break
