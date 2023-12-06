@@ -98,43 +98,43 @@
         <color category="red">
             <H>
                 <floor>0</floor>
-                <ceiling>60</ceiling>
+                <ceiling>22</ceiling>
             </H>
             <S>
-                <floor>124</floor>
-                <ceiling>206</ceiling>
+                <floor>107</floor>
+                <ceiling>255</ceiling>
             </S>
             <V>
-                <floor>70</floor>
-                <ceiling>255</ceiling>
+                <floor>33</floor>
+                <ceiling>205</ceiling>
             </V>
         </color>
         <color category="green">
             <H>
-                <floor>47</floor>
-                <ceiling>97</ceiling>
+                <floor>35</floor>
+                <ceiling>76</ceiling>
             </H>
             <S>
-                <floor>47</floor>
-                <ceiling>182</ceiling>
+                <floor>155</floor>
+                <ceiling>255</ceiling>
             </S>
             <V>
-                <floor>93</floor>
-                <ceiling>181</ceiling>
+                <floor>33</floor>
+                <ceiling>128</ceiling>
             </V>
         </color>
         <color category="blue">
             <H>
-                <floor>87</floor>
-                <ceiling>130</ceiling>
+                <floor>108</floor>
+                <ceiling>180</ceiling>
             </H>
             <S>
-                <floor>92</floor>
-                <ceiling>189</ceiling>
+                <floor>162</floor>
+                <ceiling>255</ceiling>
             </S>
             <V>
-                <floor>121</floor>
-                <ceiling>165</ceiling>
+                <floor>17</floor>
+                <ceiling>93</ceiling>
             </V>
         </color>
     </threshold>
