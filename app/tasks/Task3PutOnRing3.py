@@ -33,12 +33,12 @@ def Task3_PutOnRing3(cameraPath: str,
     from utils.VisionUtils import cv2AddChineseText
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 45)
 
-    # while True: # 等待到达三色环区
-    #     queue.put(img)
-    #     response = recv_data()
-    #     if response == xmlReadCommand("arrive", 0):
-    #         print("cjgq:", response)
-    #         break
+    while True: # 等待到达三色环区
+        queue.put(img)
+        response = recv_data()
+        if response == xmlReadCommand("arrive", 0):
+            print("cjgq:", response)
+            break
 
     send_dataDMA(xmlReadCommand("prepareCatch", 1), 0, 0)
     import time

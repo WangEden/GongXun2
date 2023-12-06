@@ -102,13 +102,22 @@ def Task4_PutOnRing6(cameraPath: str,
     # 按顺序放置和拿起物块，画面显示正在做的事
     COLOR = {0: "Red", 1: "Green", 2: "Blue"}
     COLOR2 = {0: "红", 1: "绿", 2: "蓝"}
-    for c in rank:
-        send_dataDMA(xmlReadCommand(f"ring{COLOR[c]}", 1), 0, 0)
-        blank = np.ones((480, 640, 3), np.uint8) * 255
-        img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
-        print(f"在色环放{COLOR2[c]}物块")
-        # 等放完
-        time.sleep(10)
+    if loop == 1:
+        for c in rank:
+            send_dataDMA(xmlReadCommand(f"ring{COLOR[c]}", 1), 0, 0)
+            blank = np.ones((480, 640, 3), np.uint8) * 255
+            img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
+            print(f"在色环放{COLOR2[c]}物块")
+            # 等放完
+            time.sleep(10)
+    elif loop == 2:
+        for c in rank:
+            send_dataDMA(xmlReadCommand(f"md{COLOR[c]}", 1), 0, 0)
+            blank = np.ones((480, 640, 3), np.uint8) * 255
+            img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
+            print(f"在色环放{COLOR2[c]}物块")
+            # 等放完
+            time.sleep(10)
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
     

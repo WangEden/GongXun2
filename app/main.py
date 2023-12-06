@@ -55,16 +55,16 @@ def process_task(queue: Queue, lock: Lock, continue_: Value):
     global camera1_path, camera2_path, qr_result, \
         sequence
 
-    # # 执行任务一 扫码
-    # from tasks.Task1QRCode import Task1_QRCode
-    # Task1_QRCode(camera1_path, image_queue, sequence, qr_result, lock)
-    # del Task1_QRCode
-    sequence = [1, 2, 3, 1, 2, 3]
+    # 执行任务一 扫码
+    from tasks.Task1QRCode import Task1_QRCode
+    Task1_QRCode(camera1_path, image_queue, sequence, qr_result, lock)
+    del Task1_QRCode
+    # sequence = [1, 2, 3, 1, 2, 3]
 
-    # # 执行任务二 从圆盘取物块
-    # from tasks.Task2GetFromPlate import Task2_GetFromPlate
-    # Task2_GetFromPlate(camera2_path, image_queue, sequence, 1)
-    # del Task2_GetFromPlate
+    # 执行任务二 从圆盘取物块
+    from tasks.Task2GetFromPlate import Task2_GetFromPlate
+    Task2_GetFromPlate(camera2_path, image_queue, sequence, 1)
+    del Task2_GetFromPlate
 
     # 执行任务三 在粗加工区放取物块
     from tasks.Task3PutOnRing3 import Task3_PutOnRing3

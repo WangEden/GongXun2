@@ -27,9 +27,9 @@
     <reviewBlue>qbsh</reviewBlue>
 
     <!-- 从码垛放置 -->
-    <mdRed>rsmd</mdRed>
-    <mdGreen>gsmd</mdGreen>
-    <mdBlue>bsmd</mdBlue>
+    <mdRed>mdrs</mdRed>
+    <mdGreen>mdgs</mdGreen>
+    <mdBlue>mdbs</mdBlue>
     
     <!-- 抓红色 -->
     <!-- <catchred>run3</catchred> -->
