@@ -172,7 +172,7 @@ def Task3_PutOnRing3(cameraPath: str,
         img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
         print(f"在色环放{COLOR2[c]}物块")
         # 等放完
-        time.sleep(14)
+        time.sleep(12)
 
     # time.sleep(1)
 
@@ -181,7 +181,7 @@ def Task3_PutOnRing3(cameraPath: str,
         blank = np.ones((480, 640, 3), np.uint8) * 255
         img = cv2AddChineseText(blank, f"抓{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
         print(f"抓{COLOR2[c]}物块")
-        time.sleep(14)
+        time.sleep(12)
         # while True:
         #     response = recv_data()
         #     queue.put(img)
@@ -189,7 +189,7 @@ def Task3_PutOnRing3(cameraPath: str,
         #         break
         
     send_dataDMA(xmlReadCommand("complete", 1), 0, 0)
-    print(xmlReadCommand("complete", 0))
+    print("cjgq", xmlReadCommand("complete", 0))
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
     

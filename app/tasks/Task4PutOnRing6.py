@@ -135,7 +135,7 @@ def Task4_PutOnRing6(cameraPath: str,
             img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
             print(f"在色环放{COLOR2[c]}物块")
             # 等放完
-            time.sleep(14)
+            time.sleep(12)
     elif loop == 2:
         for c in rank:
             send_dataDMA(xmlReadCommand(f"md{COLOR[c]}", 1), 0, 0)
@@ -143,13 +143,20 @@ def Task4_PutOnRing6(cameraPath: str,
             img = cv2AddChineseText(blank, f"在色环放{COLOR2[c]}物块", (384, 200), (0, 0, 0), 45)
             print(f"在色环放{COLOR2[c]}物块")
             # 等放完
-            time.sleep(14)
+            time.sleep(12)
 
     blank = np.ones((480, 640, 3), np.uint8) * 255
-    send_dataDMA("rwwc", 0, 0)
+
     from utils.VisionUtils import cv2AddChineseText
-    img = cv2AddChineseText(blank, f"去圆盘取第二轮物块", (384, 200), (0, 0, 0), 45)
+    img = cv2AddChineseText(blank, f"回圆盘", (384, 200), (0, 0, 0), 45)
     queue.put(img)
+
+    if loop == 1:
+        send_dataDMA(xmlReadCommand("huiyuanpan", 1), 0, 0)
+        print("zcq", xmlReadCommand("huiyuanpan", 0))
+    elif loop == 2:
+        send_dataDMA(xmlReadCommand("complete", 1), 0, 0)
+        print("zcq", xmlReadCommand("complete", 0))
 
 
 if __name__ == "__main__":

@@ -54,7 +54,7 @@ def send_cmd(cmd: str):
 
 
 def recv_data():
-    response = uart.read(6)
+    response = uart.read(4)
     print("chuangkou byte:", response)
     if len(response) >= 4:
         r = response.decode("utf-8", "ignore")[0:4]

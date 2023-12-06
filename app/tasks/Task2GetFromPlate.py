@@ -164,7 +164,8 @@ def Task2_GetFromPlate(cameraPath: str,
     img = cv2AddChineseText(blank, f"去粗加工区", (384, 200), (0, 0, 0), 65)
     queue.put(img)
 
-    send_dataDMA("rwwc", 0, 0)
+    send_dataDMA(xmlReadCommand("complete", 1), 0, 0)
+    print("yp", xmlReadCommand("complete", 0))
             
 
 if __name__ == "__main__":

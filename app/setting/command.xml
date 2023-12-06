@@ -10,6 +10,8 @@
 
     <!-- 任务完成 -->
     <complete>rwwc</complete>
+    <!-- 有一问题 -->
+    <huiyuanpan>RWWC</huiyuanpan>
 
     <!-- 从圆盘上取物块到载物盘 -->
     <plateRed>setr</plateRed>
@@ -30,6 +32,7 @@
     <mdRed>mdrs</mdRed>
     <mdGreen>mdgs</mdGreen>
     <mdBlue>mdbs</mdBlue>
+
     
     <!-- 抓红色 -->
     <!-- <catchred>run3</catchred> -->
