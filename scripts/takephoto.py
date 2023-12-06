@@ -56,6 +56,7 @@ cap.set(cv2.CAP_PROP_CONTRAST, capSetting[1])
 cap.set(cv2.CAP_PROP_SATURATION, capSetting[2])
 cap.set(cv2.CAP_PROP_HUE, capSetting[3])
 
+
 isflip = False
 with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
     color = file.read()
@@ -63,6 +64,12 @@ with open("/home/jetson/color.txt", "r", encoding="utf-8-sig") as file:
         isflip = False
     elif int(color) == 1: # 白车
         isflip = True
+
+brightness_ = cap.get(cv2.CAP_PROP_BRIGHTNESS)
+contrast = cap.get(cv2.CAP_PROP_CONTRAST)
+saturation = cap.get(cv2.CAP_PROP_SATURATION)
+hue = cap.get(cv2.CAP_PROP_HUE)
+print("亮度值:", brightness_, "对比度:", contrast, "饱和度:", saturation, "色调值:", hue)
 
 while n[0] > 0:
     ret, frame = cap.read()
@@ -77,8 +84,9 @@ while n[0] > 0:
         with open("./captures/img.txt", "w") as file:
             file.write(str(n[0] + 1))
         n[0] = 0
-
+    
     if stop:
         cv2.imwrite(f"./captures/take{n[0]}.jpg", frame)
         with open("./captures/img.txt", "w") as file:
             file.write(str(n[0] + 1))
+            break
