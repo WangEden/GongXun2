@@ -1,14 +1,10 @@
-import serial, struct, time
-
+import serial, struct
 
 uart = serial.Serial(  # 声明串口
     port="/dev/ttyTHS1",
     baudrate=115200,
-    # bytesize=8,
-    # parity=serial.PARITY_NONE,
     stopbits=1,
     timeout=1,
-    # dsrdtr=True,1
 )
 
 # 定义数据包，格式为2个帧头+4个字符数据+2个半整型数据+帧尾（11byte）
@@ -46,12 +42,15 @@ def send_dataDMA(cmd: list, i, f):
     uart.write(data)
 
 
-def recv_dataCode():
-    return uart.read(6).decode("utf-8", 'ignore')
-
-
-def recv_data():
-    return uart.read().decode("utf-8", 'ignore')
+def send_cmd(cmd: str):
+    data = struct.pack(
+        "<bbbb",  # 四个字符作为命令, 两个浮点作为xy偏差
+        ord(str(cmd[0])),  # 字符1
+        ord(str(cmd[1])),  # 字符2
+        ord(str(cmd[2])),  # 字符3
+        ord(str(cmd[3]))   # 字符4
+    )
+    uart.write(data)
 
 
 def recv_data():
@@ -64,18 +63,6 @@ def recv_data():
 
 
 if __name__ == "__main__":
-    send_dataDMA("buaa", 120, -304)
-    # send_dataDMA("ba  ", 0, 0) -32767 -32767
-
-    # send_dataDMA("QROK", 1, 1)
-    # while True:
-    #     response = recv_data()
-    #     # response = uart.read(4).decode("utf-8", 'ignore')[0:4]
-    #     print("response", response)
-        # uart.write(response)
-        # if response == "":
-        #     print("")
-        # else:
-        #     pass
-        #     print("waiting...")
-      
+    while True:
+        response = recv_data()
+        print("return:", response)

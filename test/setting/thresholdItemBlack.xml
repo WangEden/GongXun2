@@ -1,0 +1,44 @@
+<threshold tag="item">
+    <color category="red">
+        <H>
+            <floor>0</floor>
+            <ceiling>22</ceiling>
+        </H>
+        <S>
+            <floor>107</floor>
+            <ceiling>255</ceiling>
+        </S>
+        <V>
+            <floor>33</floor>
+            <ceiling>205</ceiling>
+        </V>
+    </color>
+    <color category="green">
+        <H>
+            <floor>35</floor>
+            <ceiling>76</ceiling>
+        </H>
+        <S>
+            <floor>147</floor>
+            <ceiling>255</ceiling>
+        </S>
+        <V>
+            <floor>33</floor>
+            <ceiling>128</ceiling>
+        </V>
+    </color>
+    <color category="blue">
+        <H>
+            <floor>108</floor>
+            <ceiling>180</ceiling>
+        </H>
+        <S>
+            <floor>162</floor>
+            <ceiling>255</ceiling>
+        </S>
+        <V>
+            <floor>17</floor>
+            <ceiling>93</ceiling>
+        </V>
+    </color>
+</threshold>
