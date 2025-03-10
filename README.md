@@ -1,8 +1,8 @@
 此仓库为工创赛物流车中位机JetsonNano上的代码，使用Python语言编写图像处理和比赛任务调度等业务逻辑
 
 ### 小车演示视频链接：
-通过网盘分享的文件：工创赛物流车.mp4
-链接: https://pan.baidu.com/s/1FrL1pspSa8USBVx_eldk4A?pwd=q8qf 提取码: q8qf 
+通过网盘分享的文件：工创赛物流车.mov
+链接: https://pan.baidu.com/s/1_9tQeQntiIW0niecB8EMRw?pwd=xqw2 提取码: xqw2 
 --来自百度网盘超级会员v5的分享
 
 
